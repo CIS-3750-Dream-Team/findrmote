@@ -1,0 +1,26 @@
+{
+  "name": "findrmote-api",
+  "version": "1.0.0",
+  "description": "findrmote API Server",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CIS-3750-Dream-Team/findrmote.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CIS-3750-Dream-Team/findrmote/issues"
+  },
+  "homepage": "https://github.com/CIS-3750-Dream-Team/findrmote#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-winston": "^4.1.0",
+    "winston": "^3.3.3"
+  }
+}
