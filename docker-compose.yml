@@ -1,0 +1,25 @@
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.dev
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app/:/app/
+    environment:
+      - PORT=3000
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - "6543:6543"
+    volumes:
+      - ./api/:/api/
+    environment:
+      - PORT=6543
