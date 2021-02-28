@@ -1,0 +1,67 @@
+/* custom.scss
+ * February 27, 2021
+ * Bootstrap style overrides
+ */
+
+@import 'main';
+
+$primary: $logo1;
+$secondary: $grey1;
+
+
+body {
+  .btn {
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.75rem;
+  }
+
+  .btn-secondary {
+    color: $text1 !important;
+
+    &:hover {
+      background-color: $grey2;
+      border-color: $grey2;
+    }
+  }
+
+  .btn-outline-secondary {
+    border-color: $grey2;
+    color: $text1;
+  }
+
+  .form-control {
+    border: 1px solid $grey1;
+    border-radius: 0.5rem;
+    color: $text1;
+
+    &:focus {
+      border: 1px solid $grey2;
+      color: $text1;
+    }
+
+    &:disabled {
+      border: 1px solid $grey2;
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      color: $text0;
+    }
+  }
+
+  .dropdown-menu {
+    border: 1px solid $grey1;
+    border-radius: 0.5rem;
+
+    .dropdown-item {
+      cursor: pointer;
+
+      &:hover:not(.active) {
+        background-color: $grey1;
+      }
+    }
+  }
+}
+
+// Needs to be at the bottom so the variable overrides stick
+@import "../../node_modules/bootstrap/scss/bootstrap";

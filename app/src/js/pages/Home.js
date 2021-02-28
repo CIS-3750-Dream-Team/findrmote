@@ -22,16 +22,19 @@ function Home(props) {
       })
   }
 
-  const setValue = (e) => {
-    setURL(e.target.value);
-  }
-
   return (
     <div id='home'>
       <h3> Home </h3>
-      <div className="input-group mt-3">
-        <input className="form-control" type="text" onChange={setValue} value={apiURL}/>
-        <button className="btn btn-outline-primary" type="button" onClick={send}>
+
+      <div className="d-flex mt-3 w-50">
+        <input 
+          className="form-control me-4" 
+          value={apiURL}
+          onChange={e => setURL(e.target.value)} 
+          type="text"
+        />
+
+        <button className="btn btn-outline-primary" onClick={send} type="button">
           Send
         </button>
       </div>

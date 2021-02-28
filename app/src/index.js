@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import App from './js/App';
 
-import 'bootstrap/scss/bootstrap.scss';
+import 'bootstrap';
+
+import './scss/main.scss';
+import './scss/custom.scss';
 
 
 ReactDOM.render(
