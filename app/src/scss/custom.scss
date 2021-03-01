@@ -5,9 +5,9 @@
 
 @import 'main';
 
+
 $primary: $logo1;
 $secondary: $grey1;
-
 
 body {
   .btn {
@@ -48,20 +48,7 @@ body {
       color: $text0;
     }
   }
-
-  .dropdown-menu {
-    border: 1px solid $grey1;
-    border-radius: 0.5rem;
-
-    .dropdown-item {
-      cursor: pointer;
-
-      &:hover:not(.active) {
-        background-color: $grey1;
-      }
-    }
-  }
 }
 
 // Needs to be at the bottom so the variable overrides stick
-@import "../../node_modules/bootstrap/scss/bootstrap";
+@import '../../node_modules/bootstrap/scss/bootstrap';
