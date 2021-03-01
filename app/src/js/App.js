@@ -12,7 +12,7 @@ function App(props) {
       <div className='App p-5'>
         <h1> findrmote </h1>
 
-        <nav className="nav flex-column align-items-start w-25 my-3">
+        <nav className='nav flex-column align-items-start w-25 my-3'>
           <Link className='btn btn-link' to='/home'> Home </Link>
           <Link className='btn btn-link' to='/profile'> Profile </Link>
         </nav>

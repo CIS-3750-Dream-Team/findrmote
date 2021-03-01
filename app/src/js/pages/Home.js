@@ -26,15 +26,15 @@ function Home(props) {
     <div id='home'>
       <h3> Home </h3>
 
-      <div className="d-flex mt-3 w-50">
+      <div className='d-flex mt-3 w-50'>
         <input 
-          className="form-control me-4" 
+          className='form-control me-4' 
           value={apiURL}
           onChange={e => setURL(e.target.value)} 
-          type="text"
+          type='text'
         />
 
-        <button className="btn btn-outline-primary" onClick={send} type="button">
+        <button className='btn btn-outline-primary' onClick={send} type='button'>
           Send
         </button>
       </div>
