@@ -1,0 +1,56 @@
+/* dropdown.scss
+ * February 28, 2021
+ * Dropdown component styling
+ */
+
+@import 'main';
+
+
+.dropdown {
+  .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+      margin-left: 0.5rem;
+      margin-right: -0.2rem;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+
+  .dropdown-menu {
+    border: 1px solid $grey1;
+    border-radius: 0.5rem;
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+
+      svg {
+        margin-left: 1rem;
+      }
+
+      &:hover:not(.active) {
+        background-color: $grey1;
+      }
+    }
+  }
+
+  .dropdown-submenu {
+    position: relative;
+
+    .dropdown-menu {
+      top: -10px;
+      left: 100%;
+      margin-left: .1rem;
+      margin-right: .1rem;
+      border-radius: 0.25rem 0.5rem 0.5rem;
+    }
+  }
+}
