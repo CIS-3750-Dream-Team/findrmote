@@ -1,10 +1,10 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 import "../../scss/jobCard.scss";
 
 /**
  * @description The Job Card component with job title, company, job details.
  * @param {Object} props The properties sent to the component
- * @param {string} props.jobID The job ID to set the Job controls
+ * @param {string} props.jobID the ID of the job that the card represents
  * @returns {ReactElement} The Job Card component with job title, company, job details.
  */
 export default function JobCard({ jobID }) {
@@ -30,6 +30,12 @@ export default function JobCard({ jobID }) {
 	);
 }
 
+/**
+ * @description Renders a list of technologies for the job
+ * @param {Object} props The properties sent to the component
+ * @param {string} props.techlist The list of technologies that needs to be displayed as tags
+ * @returns {ReactElement} The Techlogoy List component with the technology tag.
+ */
 function TechnologyList({ techlist }) {
 	return (
 		<ul className="jobcard--techlist d-flex flex-row flex-wrap align-items-center">
