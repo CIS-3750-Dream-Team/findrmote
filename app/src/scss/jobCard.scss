@@ -7,9 +7,18 @@
 
 .jobcard {
 	min-width: 17.188rem;
-	min-height: 21.563rem;
+	// After creating job controls the team decides what to do with the min height
+	// min-height: 21.563rem;
 	border: none !important;
 	border-radius: 10px !important;
+	transition: all 0.4s ease-out;
+
+	&:hover {
+		cursor: pointer;
+		box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
+			0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
+			0px 0px 1px rgba(0, 0, 0, 0.04) !important;
+	}
 
 	&--body {
 		padding: 30px !important;
@@ -48,7 +57,7 @@
 	}
 }
 
-// Media Queries: For iPad and ipad Mini
+// Media Queries: For iPad and iPad Mini
 @media only screen and (device-width: 768px) {
 	.jobcard {
 		&--title {
