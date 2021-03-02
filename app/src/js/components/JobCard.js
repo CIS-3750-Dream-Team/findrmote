@@ -2,7 +2,7 @@ import React from "react";
 import "../../scss/jobCard.scss";
 
 /**
- * @description The Job Card component with job title, company, job details.
+ * @description The Job Card component with job title, company, job details
  * @param {Object} props The properties sent to the component
  * @param {Object} props.job_data the job data object
  * @param {Object} props.job_data.job_id the job id

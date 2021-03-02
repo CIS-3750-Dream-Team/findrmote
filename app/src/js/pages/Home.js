@@ -3,7 +3,7 @@ import JobCard from "../components/JobCard";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// TODO: delete after connecting to api later. backend api doesn't send proper job_data format yet: no tags array
+// TODO: delete after connecting to api later. backend api doesn't send proper job_data format yet: no tags array.
 const job_datas = [
 	{
 		job_id: "1234",

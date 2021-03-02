@@ -4,6 +4,7 @@ import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 import Home from "./pages/Home";
 import Components from "./pages/Components";
 
+// Putting comments to fix spaces
 function App(props) {
 	return (
 		<Router>
