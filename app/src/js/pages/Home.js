@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 
 function Home(props) {
-  const [apiURL, setURL] = useState(API_URL);
-
-  const send = (e) => {
-    fetch(`${apiURL}/jobs`, {
+  useEffect(() => {
+    // Get job data on component render
+    fetch(`${API_URL}/jobs`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -15,28 +14,22 @@ function Home(props) {
     })
       .then(res => res.json())
       .then(job_data => {
+        // Store the job data in state
         console.log(job_data);
       })
       .catch(err => {
+        // Display an error to user, tell them to refresh
         console.error(err);
       })
-  }
+  })
 
   return (
     <div id='home'>
-      <h3> Home </h3>
-
-      <div className='d-flex mt-3 w-50'>
-        <input 
-          className='form-control me-4' 
-          value={apiURL}
-          onChange={e => setURL(e.target.value)} 
-          type='text'
-        />
-
-        <button className='btn btn-outline-primary' onClick={send} type='button'>
-          Send
-        </button>
+      <div className="criteria-wrapper">
+        {/* Add the SortSelect, FilterSelect, and SearchBar here */}
+      </div>
+      <div className="job-wrapper">
+        {/* Add the JobCard mapping here */}
       </div>
     </div>
   );
