@@ -63,7 +63,7 @@ function Home(props) {
 				// Display an error to user, tell them to refresh
 				console.error(err);
 			});
-	});
+	}, []);
 
 	return (
 		<div id="home">
