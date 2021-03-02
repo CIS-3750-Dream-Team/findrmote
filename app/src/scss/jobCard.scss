@@ -1,0 +1,70 @@
+/* jobCard.scss
+ * March 01, 2021
+ * Job Card Component Styling
+ */
+
+@import './main';
+
+.jobcard {
+  min-width: 17.188rem;
+  // After creating job controls the team decides what to do with the min height.
+  // min-height: 21.563rem;
+  border: none !important;
+  border-radius: 10px !important;
+  transition: all 0.4s ease-out;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
+      0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
+      0px 0px 1px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  &--body {
+    padding: 30px !important;
+  }
+
+  &--company {
+    font-weight: 700;
+    font-size: 22px;
+    color: $text0;
+    margin-bottom: 12px !important;
+  }
+
+  &--title {
+    font-weight: 700;
+    font-size: 42px;
+    line-height: 105%;
+    color: $text1;
+    margin: 14px 0px !important;
+  }
+
+  &--tags {
+    padding: 0;
+    & li {
+      list-style: none;
+      padding: 3px 6px;
+      background-color: $grey1;
+      border-radius: 3px;
+      margin-right: 10px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-family: 'Rubik', sans-serif;
+      font-size: 13px;
+      line-height: 105%;
+      color: $text0;
+    }
+  }
+}
+
+// Media Queries: For iPad and iPad Mini
+@media only screen and (device-width: 768px) {
+  .jobcard {
+    &--title {
+      font-size: 28px;
+    }
+    &--company {
+      font-size: 18px;
+    }
+  }
+}
