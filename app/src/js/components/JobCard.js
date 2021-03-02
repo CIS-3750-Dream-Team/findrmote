@@ -12,17 +12,15 @@ import "../../scss/jobCard.scss";
  * @returns {ReactElement} The Job Card component with job title, company, job details.
  */
 export default function JobCard({ job_data }) {
-	return (
-		<div className="card jobcard my-5 shdw-md">
-			<div className="card-body jobcard--body">
-				<h5 className="jobcard--company">{job_data.company}</h5>
-				<h1 className="card-title jobcard--title">
-					{job_data.job_title}
-				</h1>
-				<Tags tags={job_data.tags} />
-			</div>
-		</div>
-	);
+  return (
+    <div className="card jobcard my-5 shdw-md">
+      <div className="card-body jobcard--body">
+        <h5 className="jobcard--company">{job_data.company}</h5>
+        <h1 className="card-title jobcard--title">{job_data.job_title}</h1>
+        <Tags tags={job_data.tags} />
+      </div>
+    </div>
+  );
 }
 
 /**
@@ -32,11 +30,11 @@ export default function JobCard({ job_data }) {
  * @returns {ReactElement} The Tags component with the technology tag.
  */
 function Tags({ tags }) {
-	return (
-		<ul className="jobcard--tags d-flex flex-row flex-wrap align-items-center">
-			{tags.map((tag, i) => (
-				<li key={i}>{tag}</li>
-			))}
-		</ul>
-	);
+  return (
+    <ul className="jobcard--tags d-flex flex-row flex-wrap align-items-center">
+      {tags.map((tag, i) => (
+        <li key={i}>{tag}</li>
+      ))}
+    </ul>
+  );
 }
