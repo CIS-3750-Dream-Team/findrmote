@@ -6,16 +6,15 @@
 @import "./main";
 
 .jobcard {
-	width: 17.188rem;
+	min-width: 17.188rem;
 	border: none !important;
 	border-radius: 10px !important;
 
 	&--body {
-		padding: 30px 25px !important;
+		padding: 30px !important;
 	}
 
 	&--company {
-		line-height: 70%;
 		font-weight: 700;
 		font-size: 22px;
 		color: $text0;
@@ -30,7 +29,7 @@
 		margin: 14px 0px !important;
 	}
 
-	&--techlist {
+	&--tags {
 		padding: 0;
 		& li {
 			list-style: none;
@@ -44,6 +43,18 @@
 			font-size: 13px;
 			line-height: 105%;
 			color: $text0;
+		}
+	}
+}
+
+// Media Queries: For iPad and ipad Mini
+@media only screen and (device-width: 768px) {
+	.jobcard {
+		&--title {
+			font-size: 28px;
+		}
+		&--company {
+			font-size: 18px;
 		}
 	}
 }
