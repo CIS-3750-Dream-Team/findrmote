@@ -1,47 +1,47 @@
-import React, { useEffect } from "react";
-import JobCard from "../components/JobCard";
+import React, { useEffect } from 'react';
+import JobCard from '../components/JobCard';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 // TODO: delete after connecting to api later. backend api doesn't send proper job_data format yet: no tags array.
 const job_datas = [
   {
-    job_id: "1234",
-    company: "Google",
-    job_title: "Software Developer",
+    job_id: '1234',
+    company: 'Google',
+    job_title: 'Software Developer',
     tags: [
-      "Firebase",
-      "Javascript",
-      "HTML",
-      "Github",
-      "Python",
-      "Golang",
-      "Bash",
+      'Firebase',
+      'Javascript',
+      'HTML',
+      'Github',
+      'Python',
+      'Golang',
+      'Bash',
     ],
   },
   {
-    job_id: "5678",
-    company: "Tulip Retail",
-    job_title: "Frontend Developer",
-    tags: ["jQuery", "Javascript", "HTML", "CSS", "Github"],
+    job_id: '5678',
+    company: 'Tulip Retail',
+    job_title: 'Frontend Developer',
+    tags: ['jQuery', 'Javascript', 'HTML', 'CSS', 'Github'],
   },
   {
-    job_id: "9888",
-    company: "NCR",
-    job_title: "Software Developer",
-    tags: ["Java", "Github", "HTML", "Unit Testing", "Git"],
+    job_id: '9888',
+    company: 'NCR',
+    job_title: 'Software Developer',
+    tags: ['Java', 'Github', 'HTML', 'Unit Testing', 'Git'],
   },
   {
-    job_id: "9995",
-    company: "The Cooperators",
-    job_title: "Fullstack Developer",
-    tags: ["CSS", "Javascript", "Github", "HTML", "Git", "Kafka", "Python"],
+    job_id: '9995',
+    company: 'The Cooperators',
+    job_title: 'Fullstack Developer',
+    tags: ['CSS', 'Javascript', 'Github', 'HTML', 'Git', 'Kafka', 'Python'],
   },
   {
-    job_id: "9699",
-    company: "Mozilla",
-    job_title: "Quality Assurance",
-    tags: ["Github", "Javascript"],
+    job_id: '9699',
+    company: 'Mozilla',
+    job_title: 'Quality Assurance',
+    tags: ['Github', 'Javascript'],
   },
 ];
 
@@ -49,9 +49,9 @@ function Home(props) {
   useEffect(() => {
     // Get job data on component render
     fetch(`${API_URL}/jobs`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
       .then((res) => res.json())

@@ -1,5 +1,5 @@
-import React from "react";
-import "../../scss/jobCard.scss";
+import React from 'react';
+import '../../scss/jobCard.scss';
 
 /**
  * @description The Job Card component with job title, company, job details

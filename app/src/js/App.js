@@ -1,8 +1,8 @@
-import React from "react";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import React from 'react';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 
-import Home from "./pages/Home";
-import Components from "./pages/Components";
+import Home from './pages/Home';
+import Components from './pages/Components';
 
 function App(props) {
   return (
