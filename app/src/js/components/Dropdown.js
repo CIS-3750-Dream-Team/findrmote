@@ -61,6 +61,7 @@ function Dropdown(props) {
 
       <ul className='dropdown-menu' aria-labelledby={props.id}>
         {props.clear ? (
+          // If the 'clear' prop exists, display the 'Clear Selections' button
           <React.Fragment>
             <li className='dropdown-item' onClick={e => clearValue(e)}>
               Clear Selections <HiOutlineXCircle />
@@ -70,6 +71,7 @@ function Dropdown(props) {
         ) : null}
 
         {props.options.map(({label, active, options}, i) => (
+          // If the option has options then it's a submenu, otherwise, just an item
           options ? SubMenu(label, options, i) : DropdownItem(label, active, i)
         ))}
       </ul>

@@ -1,36 +1,31 @@
 import React from "react";
 import { Route, Link, BrowserRouter as Router } from "react-router-dom";
 
-import Home from "./pages/Home";
-import Profile from "./pages/Profile";
-import Components from "./pages/Components";
+import Home from './pages/Home';
+import Components from './pages/Components';
 
 function App(props) {
-	return (
-		<Router>
-			<div className="App container">
-				<h1 className="my-3"> findrmote </h1>
+  return (
+    <Router>
+      <div className='App p-5'>
+        <header>
+          {/* Replace all this (Issue #4) */}
+          <h1>findrmote</h1>
+          <nav className='nav flex-column align-items-start w-25 my-3'>
+            <Link className='btn btn-link' to='/home'> Home </Link>
+            <Link className='btn btn-link' to='/components'> Components </Link>
+          </nav>
+        </header>
 
-				<nav className="nav flex-column align-items-start w-25 my-3">
-					<Link className="btn btn-link" to="/home">
-						Home
-					</Link>
-					<Link className="btn btn-link" to="/profile">
-						Profile
-					</Link>
-				</nav>
+        <Route exact path='/home' render={_ => <Home />} />
+        <Route exact path='/components' render={_ => <Components />} />
 
-				<Route exact path="/home" render={(_) => <Home />} />
-				<Route exact path="/profile" render={(_) => <Profile />} />
-
-				<Route
-					exact
-					path="/components"
-					render={(_) => <Components />}
-				/>
-			</div>
-		</Router>
-	);
+        <footer>
+          {/* No footer has been design yet. Do we need/want one? */}
+        </footer>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
