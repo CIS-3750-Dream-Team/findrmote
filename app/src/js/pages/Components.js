@@ -4,6 +4,7 @@
  */
 
 import {useState} from 'react';
+import {HiArrowNarrowUp as ArrowUp, HiArrowNarrowDown as ArrowDown} from 'react-icons/hi';
 
 import Dropdown from '../components/Dropdown';
 
@@ -34,6 +35,27 @@ function Components(props) {
       {label: 'sub-option 3'}, 
       {label: 'sub-option 4'}
     ]}
+  ])
+
+  // Options for the Dropdown that has a control
+  const [options4, setOptions4] = useState([
+    {label: 'option 1'},
+    {label: 'option 2'},
+    {label: 'option 3'}
+  ])
+
+  // Controls for Dropdown4
+  const [controls4, setControls4] = useState([
+    {
+      label: 'Sort Direction',
+      icon: <ArrowUp />,
+      stage: true,
+      onClick: prev => {
+        setControls4(controls4.map(({label, onClick}) => ({
+          label, onClick, stage: !prev, icon: prev ? <ArrowDown /> : <ArrowUp />
+        })))
+      }
+    }
   ])
 
   // Dropdown1 onClick handler (acts as a toggle, only one value selected at a time)
@@ -73,6 +95,19 @@ function Components(props) {
         label, active: false
       }))
     })));
+  }
+
+  // Dropdown1 onClick handler (acts as a toggle, only one value selected at a time)
+  const setDropdown4 = selected => {
+    setOptions4(options4.map(({label, active}) => (
+      {label, active: (!active && label === selected)}
+    )));
+  }
+
+  const clearDropdown4 = _ => {
+    setOptions4(options4.map(({label}) => (
+      {label, active: false}
+    )));
   }
 
   return (
@@ -137,6 +172,16 @@ function Components(props) {
           options={options3} 
           onClick={setDropdown3}
           clear={clearDropdown3}
+        />
+
+        <Dropdown 
+          id='dd4' 
+          className='me-5' 
+          name='Dropdown with a Control' 
+          options={options4} 
+          controls={controls4}
+          onClick={setDropdown4}
+          clear={clearDropdown4}
         />
       </div>
     </div>

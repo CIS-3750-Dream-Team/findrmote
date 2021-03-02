@@ -10,6 +10,7 @@ import '../../scss/dropdown.scss';
  * @prop {String}   name        The label for the main dropdown
  * @prop {Array}    options     The array of options for the dropdown
  * @prop {Function} clear       A function that clears the selection
+ * @prop {Array}    controls    Dropdown items that can be given special functionality
 */
 
 function Dropdown(props) {
@@ -61,16 +62,22 @@ function Dropdown(props) {
 
       <ul className='dropdown-menu' aria-labelledby={props.id}>
         {props.clear ? (
-          // If the 'clear' prop exists, display the 'Clear Selections' button
-          <React.Fragment>
-            <li className='dropdown-item' onClick={e => clearValue(e)}>
-              Clear Selections <HiOutlineXCircle />
-            </li>
-            <div className='divider'></div>
-          </React.Fragment>
+          <li className='dropdown-item' onClick={e => clearValue(e)}>
+            Clear Selections <HiOutlineXCircle />
+          </li>
         ) : null}
 
-        {props.options.map(({label, active, options}, i) => (
+        {props.clear ? <div className='divider'></div> : null}
+
+        {props.controls?.map(({label, icon, onClick, stage}, i) => (
+          <li key={i} className='dropdown-item' onClick={e => onClick(stage) || e.stopPropagation()}>
+            {label} {icon}
+          </li>
+        ))}
+
+        {props.controls ? <div className='divider'></div> : null}
+
+        {props.options?.map(({label, active, options}, i) => (
           // If the option has options then it's a submenu, otherwise, just an item
           options ? SubMenu(label, options, i) : DropdownItem(label, active, i)
         ))}
