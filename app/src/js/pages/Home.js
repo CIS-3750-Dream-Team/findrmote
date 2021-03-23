@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 
 import compars from '../utils/compars';
 import filters from '../utils/filters';
@@ -7,12 +7,22 @@ import JobCard from '../components/JobCard';
 const API_URL = process.env.REACT_APP_API_URL;
 
 function Home(props) {
+  const [size, setSize] = useState([0, 0]);
   const [rows, setRows] = useState(4);
   const [jobs, setJobs] = useState([]);
   const [filter, setFilter] = useState(() => filters.allowAll);
   const [comparator, setSort] = useState(() => compars.noSort);
 
   useEffect(() => {
+    if (size[0] > 1250)
+      setRows(4);
+    else if (size[0] > 1000)
+      setRows(3);
+    else if (size[0] > 750)
+      setRows(2);
+    else
+      setRows(1);
+    
     // Get job data on component render
     if (!jobs.length)
       fetch(`${API_URL}/jobs`, {
@@ -30,7 +40,17 @@ function Home(props) {
           console.error(err);
         });
 
-  }, [jobs]);
+  }, [jobs, size]);
+
+
+  useLayoutEffect(() => {
+    const updateSize = () => setSize([window.innerWidth, window.innerHeight]);
+
+    window.addEventListener('resize', updateSize);
+    updateSize();
+
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
 
 
   return (

@@ -8,16 +8,12 @@ function App(props) {
   return (
     <Router>
       <div className="App container">
-        <header>
+        <header className="row mx-4 mx-sm-2 mt-5">
           {/* Replace all this (Issue #4) */}
-          <h1>findrmote</h1>
-          <nav className="nav flex-column align-items-start w-25 my-3">
-            <Link className="btn btn-link" to="/home">
-              Home
-            </Link>
-            <Link className="btn btn-link" to="/components">
-              Components
-            </Link>
+          <h1 className="col">findrmote</h1>
+          <nav className="nav col align-items-center justify-content-end w-25 ">
+            <Link className="btn btn-link" to="/home"> Home </Link>
+            <Link className="btn btn-link" to="/components"> Components </Link>
           </nav>
         </header>
 

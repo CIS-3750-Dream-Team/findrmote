@@ -9,6 +9,9 @@
 $primary: $logo1;
 $secondary: $grey1;
 
+// Needs to be at the bottom so the variable overrides stick
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
 body {
   .btn {
     border-radius: 0.5rem;
@@ -48,7 +51,10 @@ body {
       color: $text0;
     }
   }
-}
 
-// Needs to be at the bottom so the variable overrides stick
-@import '../../node_modules/bootstrap/scss/bootstrap';
+  @include media-breakpoint-up(xl) {
+    .container {
+      max-width: 1200px;
+    }
+  }
+}
