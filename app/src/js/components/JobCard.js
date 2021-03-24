@@ -5,20 +5,20 @@ import '../../scss/job-card.scss';
 /**
  * @description The Job Card component with job title, company, job details
  * @param {Object} props The properties sent to the component
- * @param {Object} props.data the job data object
- * @param {Object} props.data.job_id the job id
- * @param {Object} props.data.company the company name
- * @param {Object} props.data.job_title the job_title
- * @param {Object} props.tags the tags
+ * @param {Object} props.job The job data object
+ * @param {Object} props.job.id The job ID
+ * @param {Object} props.job.company The company name
+ * @param {Object} props.job.title The job title
+ * @param {Object} props.tags The tags
  * @returns {ReactElement} The Job Card component with job title, company, job details.
  */
-export default function JobCard({ data }) {
+export default function JobCard({job}) {
   return (
     <div className="card jobcard my-5 shdw-md">
       <div className="card-body jobcard--body">
-        <h5 className="jobcard--company fw-normal">{data.company}</h5>
-        <h1 className="card-title jobcard--title">{data.job_title}</h1>
-        <Tags tags={data.tags} />
+        <h5 className="jobcard--company fw-normal">{job.company}</h5>
+        <h1 className="card-title jobcard--title">{job.title}</h1>
+        <Tags tags={job.tags} />
       </div>
     </div>
   );
