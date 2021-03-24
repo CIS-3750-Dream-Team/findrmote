@@ -22,7 +22,7 @@ function Home(props) {
       setRows(2);
     else
       setRows(1);
-    
+
     // Get job data on component render
     if (!jobs.length)
       fetch(`${API_URL}/jobs`, {
@@ -33,7 +33,10 @@ function Home(props) {
       })
         .then((res) => res.json())
         .then((res) => {
-          setJobs(res.data);
+          if (res.success)
+            setJobs(res.data);
+          else
+            console.log(res.error);
         })
         .catch((err) => {
           // Display an error to user, tell them to refresh
@@ -71,7 +74,7 @@ function Home(props) {
           }, [])
           .map((col, i) => (
             <div key={i} className="col mx-5 mx-sm-2">
-              {col.map((job, i) => <JobCard key={i} data={job} />)}
+              {col.map((job, i) => <JobCard key={i} job={job} />)}
             </div>
           ))
         }
