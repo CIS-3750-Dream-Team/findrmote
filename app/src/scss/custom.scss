@@ -3,8 +3,13 @@
  * Bootstrap style overrides
  */
 
-@import 'main';
-
+$logo0: #488fe0;
+$logo1: #2a76c7;
+$text0: #828f9e;
+$text1: #5a6570;
+$grey0: #fafbfc;
+$grey1: #ebeef2;
+$grey2: #c7d0d9;
 
 $primary: $logo1;
 $secondary: $grey1;
@@ -30,6 +35,10 @@ body {
   .btn-outline-secondary {
     border-color: $grey2;
     color: $text1;
+  }
+
+  .btn-light {
+    color: $text1 !important;
   }
 
   .form-control {
