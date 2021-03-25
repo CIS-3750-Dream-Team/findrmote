@@ -18,6 +18,10 @@ body {
   font-family: 'Source Sans Pro', sans-serif !important;
   background-color: $grey0 !important;
 
+  #logo {
+    max-width: 225px;
+  }
+
   // Small Shadow
   .shdw-sm,
   .form-control:disabled {

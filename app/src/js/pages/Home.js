@@ -14,7 +14,7 @@ function Home(props) {
   const [comparator, setSort] = useState(() => compars.noSort);
 
   useEffect(() => {
-    if (size[0] > 1250)
+    if (size[0] > 1200)
       setRows(4);
     else if (size[0] > 1000)
       setRows(3);
@@ -62,22 +62,26 @@ function Home(props) {
         {/* Add the SortSelect, FilterSelect, and SearchBar here */}
       </div>
 
-      <div className="job-wrapper row my-4">
-        {jobs
-          .filter(filter)
-          .sort(comparator)
-          .reduce((cols, job, i) => {
-            const r = i % rows;
-            if (!cols[r]) cols[r] = [];
-            cols[r].push(job);
-            return cols;
-          }, [])
-          .map((col, i) => (
-            <div key={i} className="col mx-5 mx-sm-2">
-              {col.map((job, i) => <JobCard key={i} job={job} />)}
-            </div>
-          ))
-        }
+      <div className="row justify-content-center">
+        <div className="col-sm col-10 mt-5">
+          <div className="row">
+            {jobs
+              .filter(filter)
+              .sort(comparator)
+              .reduce((cols, job, i) => {
+                const r = i % rows;
+                if (!cols[r]) cols[r] = [];
+                cols[r].push(job);
+                return cols;
+              }, [])
+              .map((col, i) => (
+                <div key={i} className="col">
+                  {col.map((job, i) => <JobCard key={i} job={job} />)}
+                </div>
+              ))
+            }
+          </div>
+        </div>
       </div>
     </div>
   );
