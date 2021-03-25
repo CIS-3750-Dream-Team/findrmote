@@ -12,10 +12,15 @@ function App(props) {
       <div className="App container">
         <header className="row justify-content-center">
           <div className="col-sm col-10 mt-5">
-            <div className="row align-items-center justify-content-between mt-5">
-              <Link className="col p-0" to="/">
+            <div className="row align-items-center justify-content-between mt-sm-5 mt-3">
+              <Link className="col" to="/">
                 <img id="logo" src="logo.svg" alt=""/>
               </Link>
+
+              <div className="col d-md-flex d-none justify-content-end me-5">
+                <Link className="btn btn-light" to="/login"> Sign in </Link>
+                <Link className="btn btn-secondary ms-3" to="/register"> Register </Link>
+              </div>
 
               <div className="col-5 col-xl-2 col-md-3">
                 <div className="d-flex flex-row justify-content-between">

@@ -3,14 +3,7 @@
  * Global style definitions
  */
 
-$logo0: #488fe0;
-$logo1: #2a76c7;
-$text0: #828f9e;
-$text1: #5a6570;
-$grey0: #fafbfc;
-$grey1: #ebeef2;
-$grey2: #c7d0d9;
-
+@import 'custom';
 
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&family=Source+Sans+Pro:wght@400;700&display=swap');
 
@@ -19,7 +12,7 @@ body {
   background-color: $grey0 !important;
 
   #logo {
-    max-width: 225px;
+    max-width: 200px;
   }
 
   // Small Shadow
@@ -50,5 +43,13 @@ body {
   .divider {
     margin: 0.5rem 1rem;
     border: 0.25px solid $grey1;
+  }
+}
+
+@include media-breakpoint-down(sm) { 
+  body {
+    #logo {
+      max-width: 150px;
+    }
   }
 }
