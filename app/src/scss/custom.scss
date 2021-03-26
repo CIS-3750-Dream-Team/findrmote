@@ -18,52 +18,58 @@ $secondary: $grey1;
 @import '../../node_modules/bootstrap/scss/bootstrap';
 
 body {
-  .btn {
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.75rem;
-  }
+  color: $text1;
 
-  .btn-secondary {
-    color: $text1 !important;
+  .App {
+    overflow-x: hidden;
 
-    &:hover {
-      background-color: $grey2;
-      border-color: $grey2;
+    .btn {
+      border-radius: 0.5rem;
+      padding: 0.25rem 0.75rem;
     }
-  }
 
-  .btn-outline-secondary {
-    border-color: $grey2;
-    color: $text1;
-  }
+    .btn-secondary {
+      color: $text1 !important;
 
-  .btn-light {
-    color: $text1 !important;
-  }
+      &:hover {
+        background-color: $grey2;
+        border-color: $grey2;
+      }
+    }
 
-  .form-control {
-    border: 1px solid $grey1;
-    border-radius: 0.5rem;
-    color: $text1;
-
-    &:focus {
-      border: 1px solid $grey2;
+    .btn-outline-secondary {
+      border-color: $grey2;
       color: $text1;
     }
 
-    &:disabled {
-      border: 1px solid $grey2;
-      cursor: not-allowed;
+    .btn-light {
+      color: $text1 !important;
     }
 
-    &::placeholder {
-      color: $text0;
-    }
-  }
+    .form-control {
+      border: 1px solid $grey1;
+      border-radius: 0.5rem;
+      color: $text1;
 
-  @include media-breakpoint-up(xl) {
-    .container {
-      max-width: 1200px;
+      &:focus {
+        border: 1px solid $grey2;
+        color: $text1;
+      }
+
+      &:disabled {
+        border: 1px solid $grey2;
+        cursor: not-allowed;
+      }
+
+      &::placeholder {
+        color: $text0;
+      }
+    }
+
+    @include media-breakpoint-up(xl) {
+      .container {
+        max-width: 1200px;
+      }
     }
   }
 }
