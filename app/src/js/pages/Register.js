@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from "react-router-dom";
 import { HiOutlineOfficeBuilding, HiOutlineSearch, HiOutlineArrowLeft } from "react-icons/hi";
 
 import '../../scss/register.scss';
@@ -9,6 +10,18 @@ function Register(props) {
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState(null);
   const [fields, setFields] = useState({});
+  const history = useHistory();
+
+  useEffect(() => {
+    if (fields?.submit) {
+      console.log(fields);
+  
+      // Make POST request with fields
+  
+      // Redirect to home
+      history.push('/');
+    }
+  }, [fields]);
 
   function setField(e, field) {
     const value = e.target.value;
@@ -19,11 +32,11 @@ function Register(props) {
 
   function validateField(field, value) {
     const check = validators[field];
-    return check ? check(value).filter(c => c)[0] : false;
+    return check ? check(value).filter(c => c)[0] : undefined;
   }
 
-  function validateForm(form) {
-    const result = form.reduce((result, {type, name, field1, field2}) => {
+  function validateForm(form, submit=false) {
+    const result = form.flat().reduce((result, {type, name, field1, field2}) => {
       switch(type) {
         case 'fieldset':
           result[field1.name] = {
@@ -47,9 +60,11 @@ function Register(props) {
       return result;
     }, {});
 
-    setFields(result);
+    const status = !(Object.entries(result).filter(([k, v]) => v.error).length > 0);
 
-    return !(Object.entries(result).filter(([k, v]) => v.error).length > 0);
+    setFields({...fields, ...result, submit: submit && status});
+
+    return status;
   }
 
   // Functions that validate a required field value
@@ -133,15 +148,7 @@ function Register(props) {
     );
   }
 
-  function mapper(field, i) {
-    switch(field.type) {
-      case 'fieldset': return fieldset(field, i);
-      case 'textarea': return textarea(field, i);
-      default: return input(field, i);
-    }
-  }
-
-  const forms = {
+  const layouts = {
     credentials: [
       {
         type: 'fieldset',
@@ -173,6 +180,21 @@ function Register(props) {
       {type: 'url', label: 'Company Website', name: 'company-website'}
     ]
   }
+
+  const forms = Object.entries(layouts).reduce(
+    (forms, [layout, fields]) => ({
+      ...forms,
+      [layout]: fields.map(
+        (field, i) => {
+          switch(field.type) {
+            case 'fieldset': return fieldset(field, i);
+            case 'textarea': return textarea(field, i);
+            default: return input(field, i);
+          }
+        }
+      ).flat()
+    }), {}
+  );
 
 
   return (
@@ -209,11 +231,11 @@ function Register(props) {
             <h1 className="fw-bold mb-2"> Register </h1>
             <h5 className="txt-0 mb-4"> Account Credentials </h5>
 
-            {forms.credentials.map(mapper).flat()}
+            {forms.credentials}
 
             <button
               className="btn btn-primary mt-3 w-100"
-              onClick={() => validateForm(forms.credentials) && setProgress(2)}
+              onClick={() => validateForm(layouts.credentials) && setProgress(2)}
             > Next </button>
           </div>
         )}
@@ -224,13 +246,13 @@ function Register(props) {
             <h1 className="fw-bold mb-2"> Register </h1>
             <h5 className="txt-0 mb-4"> Educational Background </h5>
 
-            {forms.education.map(mapper).flat()}
+            {forms.education}
             <div className='divider mb-4 mx-2'></div>
-            {forms.media.map(mapper).flat()}
+            {forms.media}
 
             <button
               className="btn btn-primary mt-3 w-100"
-              onClick={() => validateForm(forms.education)}
+              onClick={() => validateForm([layouts.education, layouts.media], true) }
             > Register </button>
           </div>
         )}
@@ -241,12 +263,12 @@ function Register(props) {
             <h1 className="fw-bold mb-2"> Register </h1>
             <h5 className="txt-0 mb-4"> Information for Company Contact </h5>
 
-            {forms.credentials.map(mapper).flat()}
+            {forms.credentials}
 
             <button
               type="button"
               className="btn btn-primary mt-3 w-100"
-              onClick={() => validateForm(forms.credentials) && setProgress(2)}
+              onClick={() => validateForm(layouts.credentials) && setProgress(2)}
             > Next </button>
           </div>
         )}
@@ -257,11 +279,11 @@ function Register(props) {
             <h1 className="fw-bold mb-2"> Register </h1>
             <h5 className="txt-0 mb-4"> Educational Background </h5>
 
-            {forms.company.map(mapper).flat()}
+            {forms.company}
 
             <button
               className="btn btn-primary mt-3 w-100"
-              onClick={() => validateForm(forms.company)}
+              onClick={() => validateForm(layouts.company, true)}
             > Register </button>
           </div>
         )}
@@ -270,17 +292,17 @@ function Register(props) {
       <div className="col"></div>
 
       <div className="fixed-bottom d-flex justify-content-center w-100 bg-0">
-          <div className="d-flex justify-content-center col-xl-6 col-lg-8 col-10">
-            <div className="indicators d-flex justify-content-around px-md-4 px-1 mb-5 mt-4 w-25">
-              {[0, 1, 2].map(i => (
-                <button key={i}
-                  className={`btn btn-secondary p-0 mb-3 ${progress === i ? 'active' : ''}`} 
-                  onClick={() => setProgress(i < progress ? i : progress)}
-                ></button>
-              ))}
-            </div>
+        <div className="d-flex justify-content-center col-xl-6 col-lg-8 col-10">
+          <div className="indicators d-flex justify-content-around px-md-4 px-1 mb-5 mt-4 w-25">
+            {[0, 1, 2].map(i => (
+              <button key={i}
+                className={`btn btn-secondary p-0 mb-3 ${progress === i ? 'active' : ''}`} 
+                onClick={() => setProgress(i < progress ? i : progress)}
+              ></button>
+            ))}
           </div>
         </div>
+      </div>
     </div>
   );
 }
