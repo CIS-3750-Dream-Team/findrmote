@@ -6,20 +6,18 @@
 @import 'main';
 @import 'custom';
 
-
 .jobcard {
   border: none !important;
   border-radius: 10px !important;
   font-size: 22px;
   min-width: 250px !important;
-  min-height: 300px; // Update this after controls are added
+  min-height: 300px;
   transition: all 0.4s ease-out;
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
-      0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
-      0px 0px 1px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
+      0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04) !important;
   }
 
   &--body {
@@ -60,7 +58,7 @@
   }
 }
 
-@include media-breakpoint-down(sm) { 
+@include media-breakpoint-down(sm) {
   .jobcard {
     font-size: 24px;
   }

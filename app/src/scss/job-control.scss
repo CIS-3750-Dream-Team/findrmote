@@ -1,0 +1,23 @@
+/* job-control.scss
+ * March 27, 2021
+ * Job Control Component Styling
+ */
+
+@import 'main';
+@import 'custom';
+
+.job-control {
+  width: 25px;
+  height: 22px;
+  opacity: 0.6;
+
+  &--button {
+    display: inline-block;
+    border: none;
+    background: none;
+    margin: 0;
+    text-decoration: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+}
