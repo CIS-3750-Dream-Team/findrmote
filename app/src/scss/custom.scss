@@ -3,6 +3,8 @@
  * Bootstrap style overrides
  */
 
+// Palette
+
 $logo0: #488fe0;
 $logo1: #2a76c7;
 $text0: #828f9e;
@@ -13,6 +15,18 @@ $grey2: #c7d0d9;
 
 $primary: $logo1;
 $secondary: $grey1;
+
+$red-60: #ef444499;
+$red-100: #ef4444;
+
+$blue-60: #2f80ed99;
+$blue-100: #2f80ed;
+
+$green-60: #4ade8099;
+$green-100: #4ade80;
+
+$yellow-60: #ffa21499;
+$yellow-100: #ffa214;
 
 // Needs to be at the bottom so the variable overrides stick
 @import '../../node_modules/bootstrap/scss/bootstrap';

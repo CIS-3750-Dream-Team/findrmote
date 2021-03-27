@@ -1,4 +1,5 @@
 import React from 'react';
+import JobControl from './JobControl';
 
 import '../../scss/job-card.scss';
 
@@ -12,13 +13,14 @@ import '../../scss/job-card.scss';
  * @param {Object} props.tags The tags
  * @returns {ReactElement} The Job Card component with job title, company, job details.
  */
-export default function JobCard({job}) {
+export default function JobCard({ job }) {
   return (
-    <div className="card jobcard mb-5 shdw-md">
-      <div className="card-body jobcard--body">
-        <h5 className="jobcard--company fw-normal">{job.company}</h5>
-        <h1 className="card-title jobcard--title">{job.title}</h1>
+    <div className='card jobcard mb-5 shdw-md'>
+      <div className='card-body jobcard--body'>
+        <h5 className='jobcard--company fw-normal'>{job.company}</h5>
+        <h1 className='card-title jobcard--title'>{job.title}</h1>
         <Tags tags={job.tags} />
+        <JobControl />
       </div>
     </div>
   );
@@ -32,7 +34,7 @@ export default function JobCard({job}) {
  */
 function Tags({ tags }) {
   return (
-    <ul className="jobcard--tags d-flex flex-row flex-wrap align-items-center">
+    <ul className='jobcard--tags d-flex flex-row flex-wrap align-items-center'>
       {tags.map((tag, i) => (
         <li key={i}>{tag}</li>
       ))}
