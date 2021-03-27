@@ -28,62 +28,65 @@ $green-100: #4ade80;
 $yellow-60: #ffa21499;
 $yellow-100: #ffa214;
 
-// Needs to be at the bottom so the variable overrides stick
+
 @import '../../node_modules/bootstrap/scss/bootstrap';
+
 
 body {
   color: $text1;
+  overflow: hidden;
 
-  .App {
-    overflow-x: hidden;
+  .btn {
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.75rem;
+  }
 
-    .btn {
-      border-radius: 0.5rem;
-      padding: 0.25rem 0.75rem;
-    }
+  .btn-secondary {
+    color: $text1 !important;
 
-    .btn-secondary {
-      color: $text1 !important;
-
-      &:hover {
-        background-color: $grey2;
-        border-color: $grey2;
-      }
-    }
-
-    .btn-outline-secondary {
+    &:hover {
+      background-color: $grey2;
       border-color: $grey2;
-      color: $text1;
-    }
-
-    .btn-light {
-      color: $text1 !important;
-    }
-
-    .form-control {
-      border: 1px solid $grey1;
-      border-radius: 0.5rem;
-      color: $text1;
-
-      &:focus {
-        border: 1px solid $grey2;
-        color: $text1;
-      }
-
-      &:disabled {
-        border: 1px solid $grey2;
-        cursor: not-allowed;
-      }
-
-      &::placeholder {
-        color: $text0;
-      }
-    }
-
-    @include media-breakpoint-up(xl) {
-      .container {
-        max-width: 1200px;
-      }
     }
   }
+
+  .btn-outline-secondary {
+    border-color: $grey2;
+    color: $text1;
+  }
+
+  .btn-light {
+    color: $text1 !important;
+  }
+
+  .form-control {
+    border: 1px solid $grey1;
+    border-radius: 0.5rem;
+    color: $text1;
+
+    &:focus {
+      border: 1px solid $grey2;
+      color: $text1;
+    }
+
+    &:disabled {
+      border: 1px solid $grey2;
+      cursor: not-allowed;
+    }
+
+    &::placeholder {
+      color: $grey2;
+    }
+  }
+
+  @include media-breakpoint-up(xl) {
+    .container {
+      max-width: 1200px;
+    }
+  }
+}
+
+
+::-webkit-scrollbar {
+  display: none; 
 }

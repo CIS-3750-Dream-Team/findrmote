@@ -1,45 +1,205 @@
 import React, { useState } from 'react';
-import { HiOutlineOfficeBuilding, HiOutlineSearch } from "react-icons/hi";
+import { HiOutlineOfficeBuilding, HiOutlineSearch, HiOutlineArrowLeft } from "react-icons/hi";
 
 import '../../scss/register.scss';
 
+/* #TODO: Add regex for emails and URLS */
 
 function Register(props) {
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState(null);
-  const [formdata, setFormdata] = useState({});
+  const [fields, setFields] = useState({});
 
   function setField(e, field) {
-    setFormdata(prev => {
-      prev[field] = e.target.value;
+    const value = e.target.value;
+    const error = validateField(field, value);
 
-      return prev;
-    });
+    setFields({...fields, [field]: {value, error}});
   }
 
-  function submit() {
-    console.log(formdata);
+  function validateField(field, value) {
+    const check = validators[field];
+    return check ? check(value).filter(c => c)[0] : false;
+  }
+
+  function validateForm(form) {
+    const result = form.reduce((result, {type, name, field1, field2}) => {
+      switch(type) {
+        case 'fieldset':
+          result[field1.name] = {
+            value: fields[field1.name]?.value || '',
+            error: validateField(field1.name, fields[field1.name]?.value || '')
+          }
+          result[field2.name] = {
+            value: fields[field2.name]?.value || '',
+            error: validateField(field2.name, fields[field2.name]?.value || '')
+          };
+          break;
+
+        default:
+          result[name] = {
+            value: fields[name]?.value || '',
+            error: validateField(name, fields[name]?.value || '')
+          };
+          break;
+      }
+
+      return result;
+    }, {});
+
+    setFields(result);
+
+    return !(Object.entries(result).filter(([k, v]) => v.error).length > 0);
+  }
+
+  // Functions that validate a required field value
+  // The function acccept the value of the field and return an array
+  // The array items are either null (meaning the field is valid), or an error message
+  const validators = {
+    'first-name': v => ([
+      v.length > 0 ? null : 'please provide a first name'
+    ]),
+    'last-name': v => ([
+      v.length > 0 ? null : 'please provide a last name'
+    ]),
+    'email': v => ([
+      v.length > 0 ? null : 'please provide an email',
+      v.includes('@') && v.includes('.') ? null : 'please provide a valid email'
+    ]),
+    'pass': v => ([
+      v.length > 0 ? null : 'please provide a password',
+      v.length > 7 ? null : 'password must be atleast 8 characters'
+    ]),
+    'pass-conf': v => ([
+      v.length > 0 ? null : 'please confirm your password',
+      v === fields['pass']?.value ? null : 'passwords do not match'
+    ]),
+    'company-name': v => ([
+      v.length > 0 ? null : 'please provide a company name'
+    ]),
+    'company-desc': v => ([
+      v.length > 0 ? null : 'please provide a company description'
+    ]),
+    'company-location': v => ([
+      v.length > 0 ? null : 'please provide a company location'
+    ]),
+    'company-website': v => ([
+      v.length > 0 ? null : 'please provide a company website'
+    ])
+  };
+
+
+  function input({type, label, name, optional}, i, className=null) {
+    const {value, error} = (fields[name] || {});
+
+    return (
+      <div key={i} className={className || "form-group w-100"}>
+        <label className={`txt-0 ms-2 mb-1 ${error ? 'fw-bolder error' : ''}`}>
+          {label} {optional ? <i> (Optional) </i> : null}
+        </label>
+        <label className="txt-0 ms-2 mb-1 error"> {error ? error : null} </label>
+        <input
+          className={`form-control mb-4 px-3 fs-5 ${error ? 'error' : ''}`}
+          onChange={e => setField(e, name)} value={value || ''}
+          required={!optional} type={type}
+        />
+      </div>
+    );
+  }
+
+  function textarea({type, label, name, optional}, i) {
+    const {value, error} = (fields[name] || {});
+
+    return (
+      <div key={i} className="form-group w-100">
+        <label className={`txt-0 ms-2 mb-1 ${error ? 'fw-bolder error' : ''}`}>
+          {label} {optional ? <i> (Optional) </i> : null}
+        </label>
+        <label className="txt-0 ms-2 mb-1 error"> {error ? error : null} </label>
+        <textarea
+          className={`form-control mb-4 px-3 fs-6 ${error ? 'error' : ''}`}
+          onChange={e => setField(e, name)} value={value || ''}
+          required={!optional} type={type}
+        />
+      </div>
+    )
+  }
+
+  function fieldset({field1, field2}, i) {
+    return (
+      <fieldset key={i} className="d-flex">
+        {input(field1, 0, "form-group me-4 w-100")} {input(field2, 1)}
+      </fieldset>
+    );
+  }
+
+  function mapper(field, i) {
+    switch(field.type) {
+      case 'fieldset': return fieldset(field, i);
+      case 'textarea': return textarea(field, i);
+      default: return input(field, i);
+    }
+  }
+
+  const forms = {
+    credentials: [
+      {
+        type: 'fieldset',
+        field1: {type: 'text', label: 'First Name', name: 'first-name'},
+        field2: {type: 'text', label: 'Last Name', name: 'last-name'}
+      },
+      {type: 'text', label: 'Email', name: 'email'},
+      {type: 'password', label: 'Password', name: 'pass'},
+      {type: 'password', label: 'Confirm Password', name: 'pass-conf'}
+    ],
+    education: [
+      {type: 'text', label: 'Education', name: 'education', optional: true},
+      {type: 'text', label: 'Degree & Major', name: 'education-type', optional: true},
+      {
+        type: 'fieldset',
+        field1: {type: 'date', label: 'Start Date', name: 'start-date'},
+        field2: {type: 'date', label: 'End Date', name: 'end-date'}
+      }
+    ],
+    media: [
+      {type: 'url', label: 'Github', name: 'link-github', optional: true},
+      {type: 'url', label: 'LinkedIn', name: 'link-linkedin', optional: true},
+      {type: 'url', label: 'Personal Website', name: 'link-website', optional: true}
+    ],
+    company: [
+      {type: 'text', label: 'Company Name', name: 'company-name'},
+      {type: 'textarea', label: 'Company Description', name: 'company-desc'},
+      {type: 'text', label: 'Company Location', name: 'company-location'},
+      {type: 'url', label: 'Company Website', name: 'company-website'}
+    ]
   }
 
 
   return (
-    <div id="register" className="row justify-content-center flex-grow-1 w-100">
+    <div id="register" className="row">
+      <div className="col pe-0 pt-1 pt-sm-2 me-1">
+        {progress > 0 && (
+          <button
+            className="btn d-none d-sm-flex btn-light fs-2 p-0 mt-5"
+            onClick={() => setProgress(progress - 1)}
+          > <HiOutlineArrowLeft /> </button>
+        )}
+      </div>
+
       <div className="col-xl-6 col-lg-8 col-10 d-flex flex-column justify-content-between align-items-center">
         {progress === 0 && (
           <div className="registration-home d-flex flex-column mt-5 w-100">
             <h1 className="mb-4 fw-bold"> Create an Account </h1>
+
             <button
               className="btn btn-secondary border d-flex justify-content-between align-items-center fs-3 px-4 py-3 mb-4" 
               onClick={() => setUser('candidate') || setProgress(1)}
-            >
-              I am Looking for a Job <HiOutlineSearch />
-            </button>
+            > I am Looking for a Job <HiOutlineSearch /> </button>
+
             <button
               className="btn btn-secondary border d-flex justify-content-between align-items-center fs-3 px-4 py-3" 
               onClick={() => setUser('employer') || setProgress(1)}
-            >
-              I am an Employer <HiOutlineOfficeBuilding />
-            </button>
+            > I am an Employer <HiOutlineOfficeBuilding /> </button>
           </div>
         )}
 
@@ -48,46 +208,13 @@ function Register(props) {
             {/* First form for candidates */}
             <h1 className="fw-bold mb-2"> Register </h1>
             <h5 className="txt-0 mb-4"> Account Credentials </h5>
-            <fieldset className="d-flex">
-              <div className="form-group me-4 w-100">
-                <label className="txt-0 ms-2 mb-1"> First Name </label>
-                <input 
-                  className='form-control mb-4 px-3 fs-5' type="text" 
-                  onChange={e => setField(e, 'first-name')} value={formdata['first-name']}
-                />
-              </div>
-              <div className="form-group w-100">
-                <label className="txt-0 ms-2 mb-1"> Last Name </label>
-                <input 
-                  className='form-control mb-4 px-3 fs-5' type="text" 
-                  onChange={e => setField(e, 'last-name')} value={formdata['last-name']}
-                />
-              </div>
-            </fieldset>
-            <div className="form-group">
-              <label className="txt-0 ms-2 mb-1"> Email </label>
-              <input 
-                className='form-control mb-4 px-3 fs-5' type="text" 
-                onChange={e => setField(e, 'email')} value={formdata['email']}
-              />
-            </div>
-            <div className="form-group">
-              <label className="txt-0 ms-2 mb-1"> Password </label>
-              <input 
-                className='form-control mb-4 px-3 fs-5' type="password" 
-                onChange={e => setField(e, 'pass')} value={formdata['pass']}
-              />
-            </div>
-            <div className="form-group">
-              <label className="txt-0 ms-2 mb-1"> Confirm Password </label>
-              <input 
-                className='form-control mb-4 px-3 fs-5' type="password" 
-                onChange={e => setField(e, 'pass-conf')} value={formdata['pass-conf']}
-              />
-            </div>
-            <button className="btn btn-primary mt-3 w-100" onClick={() => setProgress(2)} type="button">
-              Next
-            </button>
+
+            {forms.credentials.map(mapper).flat()}
+
+            <button
+              className="btn btn-primary mt-3 w-100"
+              onClick={() => validateForm(forms.credentials) && setProgress(2)}
+            > Next </button>
           </div>
         )}
 
@@ -96,93 +223,64 @@ function Register(props) {
             {/* Second form for candidates */}
             <h1 className="fw-bold mb-2"> Register </h1>
             <h5 className="txt-0 mb-4"> Educational Background </h5>
-            <div className="form-group">
-              <label className="txt-0 ms-2 mb-1"> Education <i> (Optional) </i> </label>
-              <input
-                className='form-control mb-4 px-3 fs-5' type="text"
-                onChange={e => setField(e, 'eduction')} value={formdata['eduction']}
-              />
-            </div>
-            <div className="form-group">
-              <label className="txt-0 ms-2 mb-1"> Degree & Major <i> (Optional) </i> </label>
-              <input
-                className='form-control mb-4 px-3 fs-5' type="text"
-                onChange={e => setField(e, 'education-level')} value={formdata['education-level']}
-              />
-            </div>
-            <fieldset className="d-flex">
-              <div className="form-group me-4 w-100">
-                <label className="txt-0 ms-2 mb-1"> Start Date </label>
-                <input
-                  className='form-control mb-4 px-3 fs-5' type="date"
-                  onChange={e => setField(e, 'education-start')} value={formdata['education-start']}
-                />
-              </div>
-              <div className="form-group w-100">
-                <label className="txt-0 ms-2 mb-1"> End Date </label>
-                <input
-                  className='form-control mb-4 px-3 fs-5' type="date"
-                  onChange={e => setField(e, 'education-end')} value={formdata['education-end']}
-                />
-              </div>
-            </fieldset>
 
-            <fieldset className="mt-3">
-              <div className="form-group">
-                <label className="txt-0 ms-2 mb-1"> Github <i> (Optional) </i> </label>
-                <input
-                  className='form-control mb-3 px-3 fs-5' type="url"
-                  onChange={e => setField(e, 'link-github')} value={formdata['link-github']}
-                />
-              </div>
-              <div className="form-group">
-                <label className="txt-0 ms-2 mb-1"> LinkedIn <i> (Optional) </i> </label>
-                <input
-                  className='form-control mb-3 px-3 fs-5' type="url"
-                  onChange={e => setField(e, 'link-linkedin')} value={formdata['link-linkedin']}
-                />
-              </div>
-              <div className="form-group">
-                <label className="txt-0 ms-2 mb-1"> Personal Website <i> (Optional) </i> </label>
-                <input
-                  className='form-control mb-4 px-3 fs-5' type="url"
-                  onChange={e => setField(e, 'link-website')} value={formdata['link-website']}
-                />
-              </div>
-            </fieldset>
+            {forms.education.map(mapper).flat()}
+            <div className='divider mb-4 mx-2'></div>
+            {forms.media.map(mapper).flat()}
 
-            <button className="btn btn-primary mt-3 w-100" onClick={() => submit()} type="button">
-              Next
-            </button>
+            <button
+              className="btn btn-primary mt-3 w-100"
+              onClick={() => validateForm(forms.education)}
+            > Register </button>
           </div>
         )}
 
 
         {progress === 1 && user === 'employer' && (
           <div className="registration-form d-flex flex-column mt-5 w-100">
-            {/* First form for employers */}
+            <h1 className="fw-bold mb-2"> Register </h1>
+            <h5 className="txt-0 mb-4"> Information for Company Contact </h5>
+
+            {forms.credentials.map(mapper).flat()}
+
+            <button
+              type="button"
+              className="btn btn-primary mt-3 w-100"
+              onClick={() => validateForm(forms.credentials) && setProgress(2)}
+            > Next </button>
           </div>
         )}
 
         {progress === 2 && user === 'employer' && (
           <div className="registration-form d-flex flex-column mt-5 w-100">
             {/* Second form for employers */}
+            <h1 className="fw-bold mb-2"> Register </h1>
+            <h5 className="txt-0 mb-4"> Educational Background </h5>
+
+            {forms.company.map(mapper).flat()}
+
+            <button
+              className="btn btn-primary mt-3 w-100"
+              onClick={() => validateForm(forms.company)}
+            > Register </button>
           </div>
         )}
+      </div>
 
-        <div className="fixed-bottom d-flex justify-content-center w-100 bg-0">
+      <div className="col"></div>
+
+      <div className="fixed-bottom d-flex justify-content-center w-100 bg-0">
           <div className="d-flex justify-content-center col-xl-6 col-lg-8 col-10">
-            <div className="indicators d-flex justify-content-around px-md-4 px-1 mb-5 mt-4 me-3 w-25">
+            <div className="indicators d-flex justify-content-around px-md-4 px-1 mb-5 mt-4 w-25">
               {[0, 1, 2].map(i => (
                 <button key={i}
                   className={`btn btn-secondary p-0 mb-3 ${progress === i ? 'active' : ''}`} 
-                  onClick={() => setProgress(i)}
+                  onClick={() => setProgress(i < progress ? i : progress)}
                 ></button>
               ))}
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

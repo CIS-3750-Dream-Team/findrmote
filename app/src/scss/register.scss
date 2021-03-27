@@ -6,13 +6,21 @@
 @import 'main';
 @import 'custom';
 
+
 #register {
-  padding-right: 45px;
   margin-bottom: 110px;
-  box-sizing: content-box;
   overflow-y: scroll;
+  scrollbar-width: none;
 
   .col-10 {
+    label.error {
+      color: $red !important;
+    }
+
+    input.error {
+      border-color: $red !important;
+    }
+
     .indicators button {
       border-radius: 50%;
       width: 12.5px;
