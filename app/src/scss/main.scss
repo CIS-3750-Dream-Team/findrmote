@@ -15,6 +15,26 @@ body {
     max-width: 200px;
   }
 
+  .txt-0 {
+    color: $text0 !important;
+  }
+
+  .txt-1 {
+    color: $text1 !important;
+  }
+
+  .bg-0 {
+    background-color: $grey0;
+  }
+
+  .bg-1 {
+    background-color: $grey1;
+  }
+
+  .bg-2 {
+    background-color: $grey2;
+  }
+
   // Small Shadow
   .shdw-sm,
   .form-control:disabled {

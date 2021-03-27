@@ -4,12 +4,13 @@ import { HiOutlineSun, HiOutlineBell, HiOutlineUserCircle } from "react-icons/hi
 import { IconContext } from "react-icons";
 
 import Home from './pages/Home';
+import Register from './pages/Register';
 import Components from './pages/Components';
 
 function App(props) {
   return (
     <Router>
-      <div className="App container">
+      <div className="App container d-flex flex-column vh-100">
         <header className="row justify-content-center">
           <div className="col-sm col-10 mt-5">
             <div className="row align-items-center justify-content-between mt-sm-5 mt-3">
@@ -38,7 +39,7 @@ function App(props) {
         {/* Replace 'undefined' as pages are created */}
         <Route exact path="/" render={(_) => <Home />} />
         <Route exact path="/login" render={(_) => undefined} />
-        <Route exact path="/register" render={(_) => undefined} />
+        <Route exact path="/register" render={(_) => <Register />} />
         <Route exact path="/profile" render={(_) => undefined} />
         <Route exact path="/job:job_id" render={(_) => undefined} />
         <Route exact path="/admin" render={(_) => undefined} />

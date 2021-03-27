@@ -28,10 +28,14 @@ $green-100: #4ade80;
 $yellow-60: #ffa21499;
 $yellow-100: #ffa214;
 
-// Needs to be at the bottom so the variable overrides stick
+
 @import '../../node_modules/bootstrap/scss/bootstrap';
 
+
 body {
+  color: $text1;
+  overflow: hidden;
+
   .btn {
     border-radius: 0.5rem;
     padding: 0.25rem 0.75rem;
@@ -71,7 +75,7 @@ body {
     }
 
     &::placeholder {
-      color: $text0;
+      color: $grey2;
     }
   }
 
@@ -80,4 +84,9 @@ body {
       max-width: 1200px;
     }
   }
+}
+
+
+::-webkit-scrollbar {
+  display: none; 
 }
