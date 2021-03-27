@@ -17,21 +17,22 @@ import {HiArrowNarrowLeft, HiExternalLink} from 'react-icons/hi';
 export default function JobHeader({ job_data }) {
   return (
     <div className="job-header-div">
-      <div className="back-button-div">
+      <div className="back-button-section">
         <HiArrowNarrowLeft className="back-button"></HiArrowNarrowLeft>
       </div>
-      <div className="job-section-div">
-        <div className="job-title-div">
-          <h3>Tulip Retail</h3>
+      <div className="job-section-container">
+        <h3>Tulip Retail</h3>
+        <div className="job-title-function-group">
           <h1>Software Developer</h1>
+          <div className="job-functions-div">
+            <JobControl/>
+          </div>
+        </div>
+        <div className="original-link-div">
           <p>
             <a href = "#">View on indeed</a>&nbsp;&nbsp;&nbsp;
             <HiExternalLink className="external-link-icon"></HiExternalLink>
           </p>
-          
-        </div>
-        <div className="job-functions-div">
-          <JobControl/>
         </div>
       </div>
     </div>
