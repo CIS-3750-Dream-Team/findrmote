@@ -4,6 +4,7 @@ import { HiOutlineSun, HiOutlineBell, HiOutlineUserCircle } from "react-icons/hi
 import { IconContext } from "react-icons";
 
 import Home from './pages/Home';
+import Job from './pages/Job';
 import Components from './pages/Components';
 
 function App(props) {
@@ -40,7 +41,7 @@ function App(props) {
         <Route exact path="/login" render={(_) => undefined} />
         <Route exact path="/register" render={(_) => undefined} />
         <Route exact path="/profile" render={(_) => undefined} />
-        <Route exact path="/job:job_id" render={(_) => undefined} />
+        <Route exact path="/job:job_id" render={(_) => <Job />} />
         <Route exact path="/admin" render={(_) => undefined} />
 
         {/* For development. Displays some common components/elements/patterns */}

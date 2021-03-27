@@ -1,0 +1,67 @@
+/* jobCard.scss
+ * March 01, 2021
+ * Job Card Component Styling
+ */
+
+ @import './main';
+ @import './custom';
+
+.job-header-div {
+
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+
+  .job-section-div {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: left;
+    flex-wrap: wrap;
+  }
+
+  .job-title-div {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    padding: 10px;
+    & > h1 {
+      color: $text1;
+      font-size: 3em;
+      font-weight: bold;
+    }
+    & > h3 {
+      color: $text0;
+    }
+    .external-link-icon {
+      font-size: 25px;
+    }
+   }
+
+   .back-button-div {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    & > .back-button {
+      font-size:40px;
+      color: $text1;
+    }
+  }
+
+  .job-functions-div {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    padding:10px;
+  
+  }
+
+ }
+
+
+
