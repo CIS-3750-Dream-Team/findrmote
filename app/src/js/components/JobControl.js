@@ -19,7 +19,7 @@ const { useState, useEffect } = React;
 /**
  * @returns {ReactElement} The Job Card component with job title, company, job details.
  */
-export default function (props) {
+export default function JobControls(props) {
   const [jobID, setJobID] = useState('');
   const [heart, setheart] = useState(false);
   const [bookmark, setBookmark] = useState(false);
