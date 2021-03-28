@@ -58,7 +58,7 @@ function Home(props) {
 
 
   return (
-    <div id="home" className="px-2">
+    <div id="home" className="px-3 pb-3">
       <div className="criteria-wrapper row">
         {/* Add the SortSelect, FilterSelect, and SearchBar here */}
       </div>
