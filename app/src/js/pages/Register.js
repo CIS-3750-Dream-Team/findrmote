@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import { HiOutlineOfficeBuilding, HiOutlineSearch, HiOutlineArrowLeft } from "react-icons/hi";
+
+import { Session } from '../utils/contexts';
 
 import '../../scss/register.scss';
 
 /* #TODO: Add regex for emails and URLS */
 
 function Register(props) {
+  const session = useContext(Session);
   const [progress, setProgress] = useState(0);
   const [user, setUser] = useState(null);
   const [fields, setFields] = useState({});
@@ -14,12 +17,31 @@ function Register(props) {
 
   useEffect(() => {
     if (fields?.submit) {
-      console.log(fields);
-  
+      delete fields.submit;
+
       // Make POST request with fields
-  
-      // Redirect to home
-      history.push('/');
+      fetch(`${process.env.REACT_APP_API_URL}/register`, {
+        method: 'POST',
+        body: JSON.stringify({...fields, type: user}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+            // Display a notification
+            if (res.success) {
+              session.setID(res.data.user_id);
+              // Redirect to Home page
+              history.push('/');
+            } else {
+              console.log(res.error);
+            }
+        })
+        .catch((err) => {
+          // Display an error popup
+          console.error(err);
+        });
     }
   }, [fields]);
 
