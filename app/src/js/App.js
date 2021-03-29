@@ -7,18 +7,20 @@ import { IconContext } from 'react-icons';
 import { Session } from './utils/contexts';
 
 import Home from './pages/Home';
-import Register from './pages/Register';
 import Login from './pages/Login';
+import Register from './pages/Register';
+import Profile from './pages/Profile';
 import Components from './pages/Components';
 
 
 function App(props) {
   const [userID, setUserID] = useState(null);
+  const [userType, setUserType] = useState(null);
   const [page, setPage] = useState({home: true});
   const location = useLocation();
 
   useEffect(() => {
-    console.log(`user_id: ${userID}`);
+    console.log(`user_id: ${userID} (${userType})`);
 
     setPage({
       home: location.pathname === '/',
@@ -28,11 +30,19 @@ function App(props) {
       profile: location.pathname === '/profile',
       admin: location.pathname === '/admin'
     });
-  }, [userID, location]);
+  }, [userID, userType, location]);
+
+  const session = {
+    id: userID,
+    type: userType,
+    setID: (id) => setUserID(id),
+    setType: (type) => setUserType(type)
+  };
 
 
   return (
-    <Session.Provider value={{id: userID, setID: (id) => setUserID(id)}}>
+    /* Session will also need to store jobs and collections */
+    <Session.Provider value={session}>
       <div className="App container d-flex flex-column vh-100">
         <header className="row justify-content-center px-3">
           <div className="col-sm col-10 mt-5">
@@ -75,7 +85,7 @@ function App(props) {
         <Route exact path="/" render={(_) => <Home />} />
         <Route exact path="/login" render={(_) => <Login />} />
         <Route exact path="/register" render={(_) => <Register />} />
-        <Route exact path="/profile" render={(_) => undefined} />
+        <Route exact path="/profile" render={(_) => <Profile />} />
         <Route exact path="/job:job_id" render={(_) => undefined} />
         <Route exact path="/admin" render={(_) => undefined} />
 
@@ -84,7 +94,7 @@ function App(props) {
         {/* An invisible button in the top left corner to set the user session */}
         <button
           className="btn btn-light position-fixed bottom-0 end-0"
-          onClick={() => setUserID('6c64cc58-a53f-4edf-a4ca-e6ce8a04f1c9')}
+          onClick={() => setUserID('6c64cc58-a53f-4edf-a4ca-e6ce8a04f1c9') || setUserType('candidate')}
         > x </button>
 
         <footer>

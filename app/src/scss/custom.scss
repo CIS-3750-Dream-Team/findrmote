@@ -57,6 +57,10 @@ body {
 
   .btn-light {
     color: $text1 !important;
+
+    &:hover {
+      background-color: $grey1;
+    }
   }
 
   .form-control {
