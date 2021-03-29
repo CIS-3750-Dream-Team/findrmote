@@ -1,0 +1,21 @@
+/* login.scss
+ * March 29, 2021
+ * Style for login page
+ */
+
+@import 'main';
+@import 'custom';
+
+.login {
+  padding: 70px 0;
+  &--register {
+    line-height: 20.11px;
+    color: #828f9e;
+  }
+
+  &--register a,
+  &--forgotpasword {
+    text-decoration: none;
+    color: $logo1;
+  }
+}

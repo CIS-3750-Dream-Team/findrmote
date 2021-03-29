@@ -1,0 +1,11 @@
+/* errors.scss
+ * March 29, 2021
+ * Style for form errors
+ */
+
+@import 'main';
+@import 'custom';
+
+.error {
+  color: $red !important;
+}
