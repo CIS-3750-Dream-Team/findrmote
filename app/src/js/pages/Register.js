@@ -32,6 +32,7 @@ function Register(props) {
             // Display a notification
             if (res.success) {
               session.setID(res.data.user_id);
+              session.setType(user);
               // Redirect to Home page
               history.push('/');
             } else {
