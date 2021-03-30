@@ -5,7 +5,8 @@ import filters from '../utils/filters';
 import JobCard from '../components/JobCard';
 import SearchBar from '../components/SearchBar';
 
-const API_URL = process.env.REACT_APP_API_URL;
+import '../../scss/home.scss';
+
 
 function Home(props) {
   const [size, setSize] = useState([0, 0]);
@@ -26,7 +27,7 @@ function Home(props) {
 
     // Get job data on component render
     if (!jobs.length)
-      fetch(`${API_URL}/jobs`, {
+      fetch(`${process.env.REACT_APP_API_URL}/jobs`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ function Home(props) {
 
 
   return (
-    <div id="home">
+    <div id="home" className="px-3 pb-3">
       <div className="criteria-wrapper row">
         {/* Add the SortSelect, FilterSelect, and SearchBar here */}
         <SearchBar> </SearchBar>

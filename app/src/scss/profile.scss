@@ -1,0 +1,20 @@
+/* profile.scss
+ * March 28, 2021
+ * Profile Page Styling
+ */
+
+@import 'main';
+@import 'custom';
+
+
+#profile {
+  .nav-bar .btn {
+    width: min-content;
+  }
+
+  .content {
+    margin-bottom: 110px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+}

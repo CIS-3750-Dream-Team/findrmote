@@ -1,0 +1,13 @@
+/* home.scss
+ * March 26, 2021
+ * Home Page Styling
+ */
+
+@import 'main';
+@import 'custom';
+
+
+#home {
+  overflow-y: scroll;
+  scrollbar-width: none;
+}
