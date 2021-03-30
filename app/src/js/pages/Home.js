@@ -3,6 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import compars from '../utils/compars';
 import filters from '../utils/filters';
 import JobCard from '../components/JobCard';
+import SearchBar from '../components/SearchBar';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -60,6 +61,7 @@ function Home(props) {
     <div id="home">
       <div className="criteria-wrapper row">
         {/* Add the SortSelect, FilterSelect, and SearchBar here */}
+        <SearchBar> </SearchBar>
       </div>
 
       <div className="row justify-content-center">
