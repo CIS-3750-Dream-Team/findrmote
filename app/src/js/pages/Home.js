@@ -3,6 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import compars from '../utils/compars';
 import filters from '../utils/filters';
 import JobCard from '../components/JobCard';
+import SearchBar from '../components/SearchBar';
 
 import '../../scss/home.scss';
 
@@ -59,8 +60,9 @@ function Home(props) {
 
   return (
     <div id="home" className="px-3 pb-3">
-      <div className="criteria-wrapper row">
+      <div className="criteria-wrapper row mt-5">
         {/* Add the SortSelect, FilterSelect, and SearchBar here */}
+        <SearchBar> </SearchBar>
       </div>
 
       <div className="row justify-content-center">
