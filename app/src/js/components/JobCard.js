@@ -15,7 +15,7 @@ import '../../scss/job-card.scss';
  */
 export default function JobCard({ job }) {
   return (
-    <div className='card jobcard mb-5 shdw-md'>
+    <div className='card jobcard mb-4 shdw-md'>
       <div className='card-body jobcard--body'>
         <h5 className='jobcard--company fw-normal'>{job.company}</h5>
         <h1 className='card-title jobcard--title'>{job.title}</h1>

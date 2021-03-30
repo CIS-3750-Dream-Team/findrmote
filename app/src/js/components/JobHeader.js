@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../scss/jobHeader.scss';
+import '../../scss/job-header.scss';
 import JobControl from './JobControl';
 import {HiArrowNarrowLeft, HiExternalLink} from 'react-icons/hi';
 
@@ -19,7 +19,7 @@ export default function JobHeader({ job_data }) {
   return (
     <div className="job-header-div">
       <div className="back-button-section">
-        <HiArrowNarrowLeft className="back-button"></HiArrowNarrowLeft>
+        <a href="/"><HiArrowNarrowLeft className="back-button"></HiArrowNarrowLeft></a>
       </div>
       <div className="job-section-container">
         <h3>{job_data.company}</h3>
@@ -30,7 +30,7 @@ export default function JobHeader({ job_data }) {
           </div>
         </div>
         <div className="original-link-div">
-          <a href = "#">View on {url.hostname}</a>&nbsp;&nbsp;&nbsp;
+          <a href = {job_data.link}>View on {url.hostname}</a>&nbsp;&nbsp;&nbsp;
           <HiExternalLink className="external-link-icon"></HiExternalLink>
         </div>
       </div>

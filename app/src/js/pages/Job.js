@@ -1,5 +1,6 @@
 import React from 'react';
 import JobHeader from '../components/JobHeader';
+import '../../scss/job-header.scss';
 
 const jobdata = {
   id: "64c4da30-33d0-4056-bf83-bac661a99209",
@@ -16,12 +17,10 @@ function Job(props) {
   return (
     <div id="jobpage">
       <JobHeader job_data={jobdata}/>
-      <div className="job-info">
-        <div dangerouslySetInnerHTML={jobdata} />
+      <div className="job-info-wrapper">
+        <div className="job-info" dangerouslySetInnerHTML={jobdata} />
       </div>
     </div>
-    
-    
   )
 }
 

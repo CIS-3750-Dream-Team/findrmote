@@ -1,0 +1,35 @@
+/* register.scss
+ * March 24, 2021
+ * Registration Page Styling
+ */
+
+@import 'main';
+@import 'custom';
+
+
+#register {
+  margin-bottom: 110px;
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  .col-10 {
+    label.error {
+      color: $red !important;
+    }
+
+    input.error {
+      border-color: $red !important;
+    }
+
+    .indicators button {
+      border-radius: 50%;
+      width: 12.5px;
+      height: 12.5px;
+
+      &.active {
+        background: $logo1;
+        border: none;
+      }
+    }
+  }
+}
