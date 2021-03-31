@@ -1,6 +1,9 @@
-import * as React from 'react';
-import { loginValidationSchema } from '../utils/validators';
+import React, {useContext} from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { useHistory } from "react-router-dom";
+
+import { Session } from '../utils/contexts';
+import { loginValidationSchema } from '../utils/validators';
 
 import '../../scss/error.scss';
 import '../../scss/login.scss';
@@ -11,16 +14,39 @@ import '../../scss/login.scss';
  * @returns {ReactElement} The Login Page React Element.
  */
 export default function Login(props) {
+  const session = useContext(Session);
+  const history = useHistory();
+
   // handle form submission
   const handleSubmit = async (values) => {
-    await new Promise((r) => setTimeout(r, 500));
-    console.log(values);
+    // Make POST request with fields
+    fetch(`${process.env.REACT_APP_API_URL}/login`, {
+      method: 'POST',
+      body: JSON.stringify(values),
+      headers: {'Content-Type': 'application/json'},
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        // Display a notification
+        if (res.success) {
+          session.setID(res.data.user_id);
+          session.setType(res.data.type);
+          // Redirect to Home page
+          history.push('/');
+        } else {
+          console.log(res.error);
+        }
+      })
+      .catch((err) => {
+        // Display an error popup
+        console.error(err);
+      });
   };
 
   return (
     <div className='row align-items-center my-5 login'>
       <div className='col-12 col-lg-5 offset-lg-3'>
-        <h1 className='fw-bold mb-2'>Sign in</h1>
+        <h1 className='fw-bold mb-4'>Sign in</h1>
         <div>
           <Formik
             initialValues={{
@@ -53,7 +79,7 @@ export default function Login(props) {
                     id='email'
                     name='email'
                     placeholder='jane@doe.com'
-                    className='form-control mb-4 px-3'
+                    className='form-control form-control-lg mb-4 px-3'
                   />
                 </div>
                 {/* Password Field */}
@@ -78,7 +104,7 @@ export default function Login(props) {
                     id='password'
                     name='password'
                     placeholder='Your password goes here'
-                    className='form-control mb-4 px-3'
+                    className='form-control form-control-lg mb-4 px-3'
                     autoComplete='on'
                   />
                 </div>

@@ -23,21 +23,19 @@ function Register(props) {
       fetch(`${process.env.REACT_APP_API_URL}/register`, {
         method: 'POST',
         body: JSON.stringify({...fields, type: user}),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
       })
         .then((res) => res.json())
         .then((res) => {
-            // Display a notification
-            if (res.success) {
-              session.setID(res.data.user_id);
-              session.setType(user);
-              // Redirect to Home page
-              history.push('/');
-            } else {
-              console.log(res.error);
-            }
+          // Display a notification
+          if (res.success) {
+            session.setID(res.data.user_id);
+            session.setType(user);
+            // Redirect to Home page
+            history.push('/');
+          } else {
+            console.log(res.error);
+          }
         })
         .catch((err) => {
           // Display an error popup

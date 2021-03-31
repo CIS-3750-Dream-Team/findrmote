@@ -60,7 +60,10 @@ function App(props) {
               :
                 <div className="col d-md-flex d-none justify-content-end me-5">
                   {/* Prompt the user on logout w/ "are you sure?" or smthn */}
-                  <button className="btn btn-light fw-bolder" onClick={() => setUserID(null)}> Logout </button>
+                  <button 
+                    className="btn btn-light fw-bolder" 
+                    onClick={() => setUserID(null) || setUserType(null)}
+                  > Logout </button>
                 </div>
               }
 
@@ -71,7 +74,9 @@ function App(props) {
                     <Link className="p-0" to="/"> <HiOutlineBell size={30} /> </Link>
 
                     {page.home ?
-                      <Link className="p-0" to="/profile"> <HiOutlineUserCircle size={30} /> </Link>
+                      <Link className="p-0" to={userID ? '/profile' : '/login'}> 
+                        <HiOutlineUserCircle size={30} /> 
+                      </Link>
                     :
                       <Link className="p-0" to="/"> <HiOutlineHome size={30} /> </Link>
                     }
