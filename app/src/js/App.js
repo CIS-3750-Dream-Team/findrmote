@@ -7,6 +7,7 @@ import { IconContext } from 'react-icons';
 import { Session } from './utils/contexts';
 
 import Home from './pages/Home';
+import Job from './pages/Job';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
@@ -83,6 +84,10 @@ function App(props) {
 
         {/* Replace 'undefined' as pages are created */}
         <Route exact path="/" render={(_) => <Home />} />
+        <Route exact path="/login" render={(_) => undefined} />
+        <Route exact path="/register" render={(_) => undefined} />
+        <Route exact path="/profile" render={(_) => undefined} />
+        <Route exact path="/job:job_id" render={(_) => <Job />} />
         <Route exact path="/login" render={(_) => <Login />} />
         <Route exact path="/register" render={(_) => <Register />} />
         <Route exact path="/profile" render={(_) => <Profile />} />
