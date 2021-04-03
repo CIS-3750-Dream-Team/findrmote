@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import JobControl from './JobControl';
 
 import '../../scss/job-card.scss';
@@ -15,14 +17,16 @@ import '../../scss/job-card.scss';
  */
 export default function JobCard({ job }) {
   return (
-    <div className='card jobcard mb-4 shdw-md'>
-      <div className='card-body jobcard--body'>
-        <h5 className='jobcard--company fw-normal'>{job.company}</h5>
-        <h1 className='card-title jobcard--title'>{job.title}</h1>
-        <Tags tags={job.tags} />
-        <JobControl />
+    <Link className='text-decoration-none' to={`/job:${job.id}`}>
+      <div className='card jobcard mb-4 shdw-md'>
+        <div className='card-body jobcard--body'>
+          <h5 className='jobcard--company fw-normal'>{job.company}</h5>
+          <h1 className='card-title jobcard--title'>{job.title}</h1>
+          <Tags tags={job.tags} />
+          <JobControl />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
