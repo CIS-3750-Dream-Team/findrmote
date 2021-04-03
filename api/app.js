@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const index = require('./routes/index');
 const register = require('./routes/register');
-const login = require('./routes/login');
+//const login = require('./routes/login');
 const jobs = require('./routes/jobs');
 
 const app = express();
@@ -35,7 +35,7 @@ app.get('/', index.get);
 
 // AUTHENTICATION
 app.post('/register', register.post);
-app.post('/login', login.post);
+//app.post('/login', login.post);
 
 // JOB DATA
 app.get('/jobs', jobs.get);
