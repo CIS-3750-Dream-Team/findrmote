@@ -28,25 +28,34 @@ function Home(props) {
       setRows(1);
 
     // Get job data on component render
-    if (!jobs.length)
-      fetch(`${process.env.REACT_APP_API_URL}/jobs`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.success)
-            setJobs(res.data);
-          else
-            console.log(res.error);
-        })
-        .catch((err) => {
-          // Display an error to user, tell them to refresh
-          console.error(err);
-        });
+    if (!jobs.length) {
+      const cachedJobs = JSON.parse(localStorage.getItem('jobs'));
 
+      if (cachedJobs && !cachedJobs.length) {
+        setJobs(cachedJobs);
+
+      } else {
+        fetch(`${process.env.REACT_APP_API_URL}/jobs`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.success) {
+              setJobs(res.data);
+              localStorage.setItem('jobs', JSON.stringify(res.data));
+            } else {
+              console.log(res.error);
+            }
+          })
+          .catch((err) => {
+            // Display an error to user, tell them to refresh
+            console.error(err);
+          });
+      }
+    }
   }, [jobs, size]);
 
   function setSort(type, direction) {

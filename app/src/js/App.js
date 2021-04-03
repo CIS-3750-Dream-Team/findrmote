@@ -89,14 +89,10 @@ function App(props) {
 
         {/* Replace 'undefined' as pages are created */}
         <Route exact path="/" render={(_) => <Home />} />
-        <Route exact path="/login" render={(_) => undefined} />
-        <Route exact path="/register" render={(_) => undefined} />
-        <Route exact path="/profile" render={(_) => undefined} />
         <Route exact path="/job:job_id" render={(_) => <Job />} />
         <Route exact path="/login" render={(_) => <Login />} />
         <Route exact path="/register" render={(_) => <Register />} />
         <Route exact path="/profile" render={(_) => <Profile />} />
-        <Route exact path="/job:job_id" render={(_) => undefined} />
         <Route exact path="/admin" render={(_) => undefined} />
 
         {/* For development. Displays some common components/elements/patterns */}
