@@ -44,7 +44,7 @@ function SortSelect({setSort}) {
   }
 
 
-	return (
+  return (
     <Dropdown
       name='Sort'
       id='sort-select'

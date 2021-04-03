@@ -8,32 +8,32 @@ import Dropdown from './Dropdown';
  * @prop {Function}   setFilter    Sets the filter function to be used on the home page
  */
 function FilterSelect({jobs, setFilter}) {
-	const [options, setOptions] = useState([
-		{
+  const [options, setOptions] = useState([
+    {
       label: 'Companies',
       options: [
         {label: 'Google'},
         {label: 'Netflix'}
       ]
     },
-		{
+    {
       label: 'Job Title', 
       options: [
         {label: 'Software Engineer'},
         {label: 'Backend Developer'}
       ]
     },
-		{
+    {
       label: 'Creation Date',
       options: [
         {label: '2020-12-03'},
         {label: '2021-11-02'}
-		  ]
+      ]
     }
   ]);
 
   function setDropdown(selected) {
-		setOptions(
+    setOptions(
       options.map(({label, active, options}) => ({
         label,
         active: (!active && label === selected) || (active && label !== selected),
@@ -57,7 +57,7 @@ function FilterSelect({jobs, setFilter}) {
   }
 
 
-	return (
+  return (
     <Dropdown
       name='Filter'
       id='filter-select'
