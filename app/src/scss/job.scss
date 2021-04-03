@@ -1,0 +1,22 @@
+/* job.scss
+ * March 27, 2021
+ * Job Page Styling
+ */
+
+@import './main';
+@import './custom';
+
+
+#jobpage {
+  min-height: 0;
+
+  .back-button {
+    transform: translate(-100%);
+  }
+
+  .job-info-wrapper {
+    min-height: 0;
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+}
