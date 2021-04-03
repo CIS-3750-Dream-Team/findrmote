@@ -9,6 +9,7 @@ const index = require('./routes/index');
 const register = require('./routes/register');
 const login = require('./routes/login');
 const jobs = require('./routes/jobs');
+const job = require('./routes/job');
 
 const app = express();
 const PORT = process.env.PORT;
@@ -39,6 +40,7 @@ app.post('/login', login.post);
 
 // JOB DATA
 app.get('/jobs', jobs.get);
+app.get('/job/:job_id', job.get);
 
 
 app.listen(PORT, () => {
