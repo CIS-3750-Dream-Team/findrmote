@@ -1,7 +1,19 @@
 /* searchbar.scss
  * March 27, 2021
- * Search component styling
+ * SearchBar component styling
  */
 
 @import 'main';
 @import 'custom';
+
+
+.searchbar {
+  .form-control,
+  .form-control:focus {
+    box-shadow: none !important;
+  }
+
+  .btn-secondary {
+    border: none !important;
+  }
+}

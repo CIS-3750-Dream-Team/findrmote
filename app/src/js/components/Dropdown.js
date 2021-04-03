@@ -11,48 +11,52 @@ import '../../scss/dropdown.scss';
  * @prop {Array}    options     The array of options for the dropdown
  * @prop {Function} clear       A function that clears the selection
  * @prop {Array}    controls    Dropdown items that can be given special functionality
-*/
-
+ */
 function Dropdown(props) {
-  const setValue = (e, label) => {
+  function setValue(e, label) {
     props.onClick?.(label);
     e.stopPropagation();
   }
 
-  const clearValue = (e) => {
+  function clearValue(e) {
     props.clear();
     e.stopPropagation();
   }
 
-  const DropdownItem = (label, active, i) => (
-    <li key={i} className='dropdown-item' onClick={e => setValue(e, label)}>
-      {label}
-      <input 
-        id={`${props.name}${i}`} 
-        className='form-check-input'
-        checked={active || false}
-        onChange={() => {}}
-        type='checkbox'
-      />
-    </li>
-  )
+  function DropdownItem(label, active, i) {
+    return (
+      <li key={i} className='dropdown-item' onClick={e => setValue(e, label)}>
+        {label}
+        <input 
+          id={`${props.name}${i}`} 
+          className='form-check-input ms-3'
+          checked={active || false}
+          onChange={() => {}}
+          type='checkbox'
+        />
+      </li>
+    );
+  }
 
-  const SubMenu = (label, options, i) => (
-    <li key={i} className='dropdown-submenu'>
-      <button className='dropdown-item dropdown-toggle'>
-        {label} <HiChevronRight />
-      </button>
-      <ul className='dropdown-menu'>
-        {options.map(({label, active}, j) => DropdownItem(label, active, j))}
-      </ul>
-    </li>
-  )
+  function SubMenu(label, options, i) {
+    return (
+      <li key={i} className='dropdown-submenu'>
+        <button className='dropdown-item dropdown-toggle'>
+          {label} <HiChevronRight />
+        </button>
+        <ul className='dropdown-menu'>
+          {options.map(({label, active}, j) => DropdownItem(label, active, j))}
+        </ul>
+      </li>
+    );
+  }
+
 
   return (
     <div className={`dropdown ` + props.className}>
       <button
         id={props.id}
-        className='btn btn-secondary dropdown-toggle'
+        className='btn btn-secondary dropdown-toggle w-100'
         data-bs-toggle='dropdown'
         data-bs-offset='0,10'
         aria-expanded='false'
@@ -83,7 +87,7 @@ function Dropdown(props) {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 export default Dropdown;

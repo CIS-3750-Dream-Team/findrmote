@@ -8,6 +8,11 @@
 
 
 #home {
-  overflow-y: scroll;
-  scrollbar-width: none;
+  min-height: 0;
+
+  .content {
+    min-height: 0;
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
 }

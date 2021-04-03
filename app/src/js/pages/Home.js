@@ -3,6 +3,8 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import compars from '../utils/compars';
 import filters from '../utils/filters';
 import JobCard from '../components/JobCard';
+import SortSelect from '../components/SortSelect';
+import FilterSelect from '../components/FilterSelect';
 import SearchBar from '../components/SearchBar';
 
 import '../../scss/home.scss';
@@ -12,8 +14,8 @@ function Home(props) {
   const [size, setSize] = useState([0, 0]);
   const [rows, setRows] = useState(4);
   const [jobs, setJobs] = useState([]);
-  const [filter, setFilter] = useState(() => filters.allowAll);
-  const [comparator, setSort] = useState(() => compars.noSort);
+  const [filter, setJobFilter] = useState(() => filters.allowAll);
+  const [comparator, setJobSort] = useState(() => compars.noSort);
 
   useEffect(() => {
     if (size[0] > 1200)
@@ -47,6 +49,13 @@ function Home(props) {
 
   }, [jobs, size]);
 
+  function setSort(type, direction) {
+    setJobSort(compars[type](direction));
+  }
+
+  function setFilter(type, value) {
+    setJobFilter(filters[type](value));
+  }
 
   useLayoutEffect(() => {
     const updateSize = () => setSize([window.innerWidth, window.innerHeight]);
@@ -59,18 +68,28 @@ function Home(props) {
 
 
   return (
-    <div id="home" className="px-3 pb-3">
-      <div className="criteria-wrapper row mt-5">
-        {/* Add the SortSelect, FilterSelect, and SearchBar here */}
-        <SearchBar> </SearchBar>
+    <div id="home" className="d-flex flex-column px-3">
+      <div className="criteria row justify-content-center mt-5">
+        {/* Job Criteria Row (Desktop) */}
+        <div className="d-none d-sm-flex row">
+          <div className="col ps-0"> <SortSelect setSort={setSort}/> </div>
+          <div className="col mx-3 mx-lg-5"> <FilterSelect setFilter={setFilter} jobs={jobs}/> </div>
+          <div className="col-4 col-lg-6 pe-0"> <SearchBar setFilter={setFilter}/> </div>
+        </div>
+        {/* Job Criteria Column (Mobile) */}
+        <div className="d-block d-sm-none col-10">
+          <div className="row"> <SortSelect setSort={setSort}/> </div>
+          <div className="row my-3"> <FilterSelect setFilter={setFilter} jobs={jobs}/> </div>
+          <div className="row"> <SearchBar setFilter={setFilter}/> </div>
+        </div>
       </div>
 
-      <div className="row justify-content-center">
-        <div className="col-sm col-10 mt-5">
+      <div className="content row justify-content-center">
+        <div className="col-sm col-10 mt-4 mt-sm-5">
           <div className="row">
             {jobs
-              .filter(filter)
               .sort(comparator)
+              .filter(filter)
               .reduce((cols, job, i) => {
                 const r = i % rows;
                 if (!cols[r]) cols[r] = [];
@@ -78,7 +97,7 @@ function Home(props) {
                 return cols;
               }, [])
               .map((col, i) => (
-                <div key={i} className="col">
+                <div key={i} className="col mb-5">
                   {col.map((job, i) => <JobCard key={i} job={job} />)}
                 </div>
               ))
