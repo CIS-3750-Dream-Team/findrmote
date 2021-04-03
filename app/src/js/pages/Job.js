@@ -1,6 +1,11 @@
-import React from 'react';
-import JobHeader from '../components/JobHeader';
-import '../../scss/job-header.scss';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router';
+import { HiArrowNarrowLeft, HiExternalLink } from 'react-icons/hi';
+
+import JobControl from '../components/JobControl';
+
+import '../../scss/job.scss';
+
 
 const jobdata = {
   id: "64c4da30-33d0-4056-bf83-bac661a99209",
@@ -14,11 +19,39 @@ const jobdata = {
 }
 
 function Job(props) {
+  const { job_id } = useParams();
+
+  useEffect(() => {
+    console.log(`job_id: ${job_id}`)
+  }, [job_id]);
+
+
   return (
-    <div id="jobpage">
-      <JobHeader job_data={jobdata}/>
-      <div className="job-info-wrapper">
-        <div className="job-info" dangerouslySetInnerHTML={jobdata} />
+    <div id="jobpage" className="d-flex flex-column px-3">
+      <header className="position-relative d-flex w-100 mt-5 mb-5">
+        <div className="back-button mt-5 pe-3">
+          <a className="txt-1" href="/"> <HiArrowNarrowLeft size={30}/> </a>
+        </div>
+
+        <div className="d-flex flex-column position-absolute">
+          <h3 className="fs-4 txt-0"> {jobdata.company} </h3>
+
+          <div className="d-flex flex-wrap">
+            <h1 className="fs-1 fw-bold me-5"> {jobdata.title} </h1>
+            <div className="d-flex align-items-center">
+              <JobControl size="1.5em" />
+            </div>
+          </div>
+
+          <div className="d-flex align-items-center">
+            <a href={jobdata.link}> View on {(new URL(jobdata.link)).hostname} </a>
+            <HiExternalLink className="ms-2" size={20}/>
+          </div>
+        </div>
+      </header>
+
+      <div className="job-info-wrapper mt-4">
+        <div className="p-0 pb-5" dangerouslySetInnerHTML={jobdata} />
       </div>
     </div>
   )
