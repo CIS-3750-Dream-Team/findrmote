@@ -3,20 +3,17 @@ import {HiSearch} from 'react-icons/hi';
 
 import '../../scss/searchbar.scss';
 
-/** Searchbar Component
- * @description The SearchBar component with setFilters(keywords)
- * @param props.setFilters
- */
 
-function Searchbar(setFilters) {
+/** Searchbar Component
+ * @prop {Function}   setFilter    Sets the filter function to be used on the home page
+ */
+function Searchbar(props) {
   return (
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2"></input>
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">
-        <HiSearch/> 
-      </button>
+    <div className="searchbar input-group mb-3">
+      <input className="form-control bg-1 py-1" placeholder="Search" type="text"></input>
+      <button className="btn btn-secondary bg-2" type="button"> <HiSearch/> </button>
     </div>
-  )
+  );
 }
 
 export default Searchbar;
