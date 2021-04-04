@@ -9,6 +9,7 @@ import {
   HiOutlineEyeOff,
   HiOutlineBriefcase
 } from "react-icons/hi";
+import ProfileTab from '../components/ProfileTab';
 
 import { Session } from '../utils/contexts';
 
@@ -81,8 +82,9 @@ function Profile(props) {
               </div>
               <div className="d-lg-flex d-none flex-column align-items-end">
                 {/* Desktop Sidebar Navigation */}
-                {sidebar.filter(item => item.visible ?? true).map(item => (
+                {sidebar.filter(item => item.visible ?? true).map((item, i)=> (
                   <button 
+                  key={i}
                     onClick={() => item.name && setPage({[item.name]: true})}
                     className={item.classes || (`
                       btn btn-${page[item.name] ? 'secondary' : 'light'} btn-lg
@@ -95,10 +97,18 @@ function Profile(props) {
               </div>
             </div>
 
-            <div className="content col-lg row-sm bg-1 ms-lg-4 mt-lg-0 mt-4 h-100">
+            <div className="content col-lg row-sm ms-lg-4 mt-lg-0 mt-4 h-100">
               {page.profile && (
                 <div className="d-flex flex-column">
                   {/* Put the Profile tab contents here (Issue #35) */}
+                  <ProfileTab profileInformation={{
+                    firstName: 'Niloy',
+                    lastName: 'Ghosh',
+                    email: 'john@doe.com',
+                  }}  
+                  isEditable={true} 
+                  session={'employer'}
+                  handleProfileInformation={(values) => console.log(values)} />
                 </div>
               )}
 
