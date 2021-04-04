@@ -1,4 +1,4 @@
-const db = require('../db');
+const db = require('../utils/db');
 const collections = require('./collections.json');
 
 
@@ -9,8 +9,8 @@ const controls = {
         id SERIAL NOT NULL PRIMARY KEY,
         user_id VARCHAR(36) NOT NULL,
         job_id VARCHAR(36) NOT NULL,
+        liked BOOLEAN NOT NULL DEFAULT FALSE,
         bookmarked BOOLEAN NOT NULL DEFAULT FALSE,
-        favourite BOOLEAN NOT NULL DEFAULT FALSE,
         applied BOOLEAN NOT NULL DEFAULT FALSE,
         hidden BOOLEAN NOT NULL DEFAULT FALSE,
         created TIMESTAMP DEFAULT CURRENT_TIMESTAMP

@@ -4,7 +4,7 @@
  */
 
 const uuid = require('uuid');
-const db = require('../db');
+const db = require('../utils/db');
 
 /* TODO
  * Check for duplicate emails

@@ -3,7 +3,7 @@
  * Login Endpoint (/login)
  */
 
-const db = require('../db');
+const db = require('../utils/db');
 
 
 module.exports = {
