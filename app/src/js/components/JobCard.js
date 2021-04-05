@@ -23,7 +23,7 @@ export default function JobCard({ job }) {
           <h5 className='jobcard--company fw-normal'>{job.company}</h5>
           <h1 className='card-title jobcard--title'>{job.title}</h1>
           <Tags tags={job.tags} />
-          <JobControl />
+          <JobControl jobID={job.id} />
         </div>
       </div>
     </Link>

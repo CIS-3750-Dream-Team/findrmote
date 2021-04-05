@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import { HiArrowNarrowLeft, HiExternalLink } from 'react-icons/hi';
 
 import JobControl from '../components/JobControl';
@@ -38,7 +39,7 @@ function Job(props) {
       <div id="jobpage" className="d-flex flex-column px-3">
         <header className="position-relative d-flex w-100 mt-5 mb-5">
           <div className="back-button mt-5 pe-3">
-            <a className="txt-1" href="/"> <HiArrowNarrowLeft size={30}/> </a>
+              <Link className="txt-1" to="/"> <HiArrowNarrowLeft size={30}/> </Link>
           </div>
 
           <div className="d-flex flex-column position-absolute">
@@ -47,7 +48,7 @@ function Job(props) {
             <div className="d-flex flex-wrap">
               <h1 className="fs-1 fw-bold me-5"> {data.title} </h1>
               <div className="d-flex align-items-center">
-                <JobControl size="1.5em" />
+                <JobControl jobID={data.id} size="1.5em" />
               </div>
             </div>
 

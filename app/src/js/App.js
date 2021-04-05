@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import { Route, Link, useLocation } from 'react-router-dom';
 import { HiOutlineSun, HiOutlineBell, HiOutlineUserCircle, HiOutlineHome } from 'react-icons/hi';
 import { IconContext } from 'react-icons';
+import swal from 'sweetalert';
 
 import { Session } from './utils/contexts';
 
@@ -15,14 +15,14 @@ import Components from './pages/Components';
 
 
 function App(props) {
-  const [userID, setUserID] = useState(null);
-  const [userType, setUserType] = useState(null);
-  const [page, setPage] = useState({home: true});
   const location = useLocation();
 
-  useEffect(() => {
-    console.log(`user_id: ${userID} (${userType})`);
+  const [userID, setUserID] = useState(null);
+  const [userType, setUserType] = useState(null);
+  const [collections, setCollections] = useState([]);
+  const [page, setPage] = useState({home: true});
 
+  useEffect(() => {
     setPage({
       home: location.pathname === '/',
       job: location.pathname === '/job',
@@ -31,13 +31,47 @@ function App(props) {
       profile: location.pathname === '/profile',
       admin: location.pathname === '/admin'
     });
-  }, [userID, userType, location]);
+  }, [location]);
+
+  useEffect(() => {
+    console.log(`user_id: ${userID} (${userType})`);
+
+    if (userID) {
+      fetch(`${process.env.REACT_APP_API_URL}/collections/:${userID}`, {
+        headers: {'Content-Type': 'application/json'},
+        method: 'GET'
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.success) {
+            setCollections([res.data, null]);
+          } else {
+            swal({icon: 'error', title: 'Uh oh!', text: res.error});
+          }
+        })
+        .catch((err) => {
+          swal({icon: 'error', title: 'Uh oh!', text: 'Failed to load your collections!'});
+          console.error(err);
+        });
+    } else {
+      setCollections([{}, null]);
+    }
+  }, [userID, userType]);
 
   const session = {
+    // View/update the user's ID (either null or a UUID)
     id: userID,
-    type: userType,
     setID: (id) => setUserID(id),
-    setType: (type) => setUserType(type)
+
+    // View/update the user's type (either null, 'candidate', or 'employer)
+    type: userType,
+    setType: (type) => setUserType(type),
+
+    // View/update user's liked, bookmarked, applied, and hidden jobs
+    collections: {get: (id) => collections[0]?.[id], sync: collections[1]},
+    setCollection: (jobID, state, sync=null) => {
+      setCollections(prev => [({...prev[0], [jobID]: state}), sync]);
+    }
   };
 
 

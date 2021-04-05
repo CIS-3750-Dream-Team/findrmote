@@ -31,7 +31,7 @@ function Home(props) {
     if (!jobs.length) {
       const cachedJobs = JSON.parse(localStorage.getItem('jobs'));
 
-      if (cachedJobs && !cachedJobs.length) {
+      if (cachedJobs && cachedJobs.length) {
         setJobs(cachedJobs);
 
       } else {
@@ -94,7 +94,7 @@ function Home(props) {
       </div>
 
       <div className="content row justify-content-center">
-        <div className="col-sm col-10 mt-4 mt-sm-5">
+        <div className="col-sm col-10 mt-4 mt-sm-5 px-3">
           <div className="row">
             {jobs
               .sort(comparator)

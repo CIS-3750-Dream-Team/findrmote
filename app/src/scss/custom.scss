@@ -82,6 +82,33 @@ body {
     }
   }
 
+
+  .swal-modal {
+    padding: 30px 0;
+    border-radius: 10px;
+    width: 300px;
+
+    .swal-text {
+      text-align: center;
+    }
+
+    .swal-footer {
+      display: flex;
+      justify-content: center;
+
+      .swal-button {
+        &--confirm {
+          background-color: $logo0;
+
+          &:hover {
+            background-color: $logo1;
+          }
+        }
+      }
+    }
+  }
+
+
   @include media-breakpoint-up(xl) {
     .container {
       max-width: 1200px;
