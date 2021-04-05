@@ -75,7 +75,6 @@ body {
 
     &:disabled {
       border: 1px solid $grey2;
-      cursor: not-allowed;
     }
 
     &::placeholder {
