@@ -36,6 +36,8 @@ export const profileValidationCandidateSchema = yup.object().shape({
   personalSite: urlValidation,
   receiveNotification: yup.boolean(),
   makeVisibleEmployers: yup.boolean(),
+  startDate: yup.date().notRequired(),
+  endDate: yup.date().notRequired().when('startDate', (startDate, schema) => (startDate && schema.min(startDate, '(cannot be smaller than start date)')))
 });
 
 export const profileValidationEmployerSchema = yup.object().shape({

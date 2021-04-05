@@ -9,20 +9,40 @@ import {
 import '../../scss/profile-tab.scss';
 import '../../scss/error.scss';
 
-const { useEffect, useState } = React;
+const { useEffect } = React;
 
-function SubmitFormOnSave({ isSaved }) {
-  const { isValid, submitForm, isSubmitting } = useFormikContext();
+/**
+ * @see - https://formik.org/docs/api/useFormikContext
+ * @param {Object} props  
+ * @returns - A helper React component that uses React Context to grab all the form values of Formik and trigger form submission manually
+ */
+function SubmitFormOnSave({ isSaved, setSaved, setEditable, session }) {
+  const {
+    submitForm,
+    isSubmitting,
+    validateForm,
+    setErrors,
+    setTouched,
+  } = useFormikContext();
 
   useEffect(async () => {
     // if form is not valid return
-    if (!isValid) {
-      return;
-    }
-
     if (isSaved && !isSubmitting) {
       try {
-        await submitForm();
+        const errors = await validateForm();
+
+        if (errors && Object.keys(errors).length === 0) {
+          // Form is valid, do any success call
+          await submitForm();
+          setEditable(false);
+          setSaved(false);
+
+          return;
+        }
+
+        setTouched({ ...touchAllFields(session) });
+        setErrors({ ...errors });
+        setSaved(false);
       } catch (e) {
         console.log(e);
       }
@@ -32,6 +52,41 @@ function SubmitFormOnSave({ isSaved }) {
   return null;
 }
 
+/**
+ * @param {string} session - The user session - candidate or employer
+ * @returns - an object with all the form fields set to true
+ */
+function touchAllFields(session) {
+  let touched = {
+    firstName: true,
+    lastName: true,
+    email: true,
+  };
+
+  if (session === 'candidate') {
+    touched = {
+      ...touched,
+      github: true,
+      linkedIn: true,
+      personalSite: true,
+      receiveNotification: true,
+      makeVisibleEmployers: true,
+      startDate: true,
+      endDate: true,
+    };
+
+    return touched;
+  }
+
+  return touched;
+}
+
+/**
+ * Function that sets up the initial values for form population and the validation schema
+ * @param {string} session - Candidate or Employer
+ * @param {Object} profileInformation - Pofile information about the user
+ * @returns a tuple of the initial form values and the validation schema based on the session
+ */
 function getInitialFormValuesAndValidationSchema(session, profileInformation) {
   const {
     firstName,
@@ -42,6 +97,8 @@ function getInitialFormValuesAndValidationSchema(session, profileInformation) {
     personalSite,
     receiveNotification,
     makeVisibleEmployers,
+    startDate,
+    endDate,
   } = profileInformation;
 
   let initialFormValues = {};
@@ -58,6 +115,8 @@ function getInitialFormValuesAndValidationSchema(session, profileInformation) {
       personalSite: personalSite != null ? personalSite : '',
       receiveNotification: receiveNotification != null ? receiveNotification : false,
       makeVisibleEmployers: makeVisibleEmployers != null ? makeVisibleEmployers : false,
+      startDate: startDate != null ? startDate : '',
+      endDate: endDate != null ? endDate : '',
     };
 
     // set validation for candidate
@@ -77,21 +136,29 @@ function getInitialFormValuesAndValidationSchema(session, profileInformation) {
   return [initialFormValues, validationSchema];
 }
 
-export default function ProfileTab({ session, isEditable, profileInformation, isSaved }) {
+/**
+ * @param {Object} props
+ * @returns - The React Component that displays the Profile Form
+ */
+export default function ProfileTab({
+  session,
+  isEditable,
+  profileInformation,
+  isSaved,
+  setSaved,
+  setEditable,
+}) {
   const [initialFormValues, validationSchema] = getInitialFormValuesAndValidationSchema(
     session,
     profileInformation
   );
-
-  const [click, setClick] = useState(false);
-
   return (
     <div className='my-1 px-2 justify-content-between profile-tab'>
       <Formik
         initialValues={initialFormValues}
         validationSchema={validationSchema}
         validateOnBlur
-        onSubmit={async (values) => console.log('submit', values)} // form submission handler
+        onSubmit={async (values) => console.log('submit', values)} // form submission handler - connect with the backend here
       >
         {(formikProps) => {
           const props = {
@@ -102,17 +169,28 @@ export default function ProfileTab({ session, isEditable, profileInformation, is
           return (
             <div>
               <ProfileCommon {...props} />
+              <div className='mb-3 mt-1 profile-tab--border-bottom'></div>
               {session === 'candidate' ? <ProfileCandidateOptional {...props} /> : null}
-              <SubmitFormOnSave isSaved={click} />
+              
+              {/* A React Component that handles the form submission trigger */}
+              <SubmitFormOnSave
+                isSaved={isSaved}
+                setSaved={setSaved}
+                setEditable={setEditable}
+                session={session}
+              />
             </div>
           );
         }}
       </Formik>
-      <button onClick={() => setClick(!click)}>Click me</button>
     </div>
   );
 }
 
+/**
+ * @param {Object} props 
+ * @returns - The React Form with common fields between candidate and the employer
+ */
 function ProfileCommon({ errors, touched, isEditable }) {
   return (
     <Form className='row'>
@@ -193,9 +271,13 @@ function ProfileCommon({ errors, touched, isEditable }) {
   );
 }
 
+/**
+ * @param {Object} props 
+ * @returns - The React Form with optional fields for candidates
+ */
 function ProfileCandidateOptional({ errors, touched, isEditable }) {
   return (
-    <Form className='row'>
+    <Form className='row mb-4'>
       {/* Education Field */}
       <div className='form-group col-12'>
         <label
@@ -239,6 +321,56 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
           type='text'
           id='degree'
           name='degree'
+          placeholder='Enter your degree'
+          className='form-control mb-4 px-3'
+          autoComplete='on'
+          disabled={!isEditable}
+        />
+      </div>
+
+      {/* Start Date Field */}
+      <div className='form-group col-12'>
+        <label
+          className={
+            errors?.startDate && touched?.startDate
+              ? 'error ms-2 mb-1'
+              : 'txt-0 ms-2 mb-1'
+          }
+          htmlFor='startDate'
+        >
+          <span className={errors?.startDate && touched?.startDate ? 'fw-bolder' : null}>
+            Start Date
+          </span>{' '}
+          <ErrorMessage name='startDate' />
+        </label>
+        <Field
+          type='date'
+          id='startDate'
+          name='startDate'
+          placeholder='Start Date'
+          className='form-control mb-4 px-3'
+          autoComplete='on'
+          disabled={!isEditable}
+        />
+      </div>
+
+      {/* End date Field */}
+      <div className='form-group col-12'>
+        <label
+          className={
+            errors?.endDate && touched?.endDate ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'
+          }
+          htmlFor='endDate'
+        >
+          <span className={errors?.endDate && touched?.endDate ? 'fw-bolder' : null}>
+            End Date
+          </span>{' '}
+          <ErrorMessage name='endDate' />
+        </label>
+        <Field
+          type='date'
+          id='endDate'
+          name='endDate'
           placeholder='Enter your degree'
           className='form-control mb-4 px-3'
           autoComplete='on'

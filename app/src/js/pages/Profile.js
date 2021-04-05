@@ -13,10 +13,14 @@ import ProfileTab from '../components/ProfileTab';
 
 import { Session } from '../utils/contexts';
 
+import '../../scss/profile.scss';
+import dummy from '../../assests/dummy.png';
 
 function Profile(props) {
   const session = useContext(Session);
   const [page, setPage] = useState({profile: true});
+  const [saved, setSaved] = useState(false);
+  const [editable, setEditable] = useState(false);
 
   const sidebar = [
     {
@@ -65,14 +69,59 @@ function Profile(props) {
     }
   ];
 
+  const handleEdit = () => {
+    setEditable(true);
+  }
+
+  const handleCancel = () => {
+    setEditable(false);
+    setSaved(false);
+  }
+
+  const handleSave = () => {
+    // when save is clicked the saved value gets passed down and triggers a form submission
+    setSaved(true);
+  }
 
   return (
     /* Remove the 'bg-#' classes as you add shit */
     <div id="profile" className="px-3 h-100">
       <div className="row justify-content-center h-100">
         <div className="col-sm col-10 mt-5 h-100">
-          <div className="row h-25 bg-2">
+          <div className="row">
             {/* Put the profile header here */}
+            <div className="offset-lg-3 col-lg-9">
+              <div className="ms-lg-4 mx-lg-1 px-lg-3 row">
+                <div className="col-lg-2">
+                  <img className='img-fluid profile-img' src={dummy}/> { /* Update the profile image here */}
+                </div>
+                <div className="col-lg-4 align-self-center">
+                  <h1>Arthur Read</h1> { /* TODO: update the profile name here */ }
+                </div>
+                {/* Edit Save Cancel Buttons */}
+                <div className="col-lg-4 align-self-center">
+                  {
+                    !editable ? <button onClick={handleEdit} 
+                      className="btn btn-primary btn-sm">Edit</button> : (
+                      <div className='row'>
+                        <div className="col-3">
+                          <button onClick={handleSave} className="btn btn-primary btn-sm mr-3">
+                            Save
+                          </button>
+                        </div>
+                        <div className="col-3">
+                          <button onClick={handleCancel}
+                            className="btn btn-danger btn-sm">
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                      )
+                  }
+                </div>    
+              </div>
+            </div>
+
           </div>
 
           <div className="row h-100 mt-4">
@@ -101,14 +150,17 @@ function Profile(props) {
               {page.profile && (
                 <div className="d-flex flex-column">
                   {/* Put the Profile tab contents here (Issue #35) */}
-                  <ProfileTab profileInformation={{
-                    firstName: 'Niloy',
-                    lastName: 'Ghosh',
-                    email: 'john@doe.com',
-                  }}  
-                  isEditable={true} 
-                  session={'employer'}
-                  handleProfileInformation={(values) => console.log(values)} />
+                  { session ? (<ProfileTab profileInformation={{
+                      firstName: 'Arthur',
+                      lastName: 'Read',
+                      email: 'john@doe.com',
+                    }}  
+                    isEditable={editable} 
+                    session={'candidate'}
+                    isSaved={saved}
+                    setSaved={setSaved}
+                    setEditable={setEditable}
+                  />) : (<h3>Please login to view your profile</h3>)}
                 </div>
               )}
 
