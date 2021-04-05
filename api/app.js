@@ -6,6 +6,7 @@ require('dotenv').config();
 const {ExpressLogger} = require('./utils/log');
 
 const index = require('./routes/index');
+const collections = require('./routes/collections');
 const register = require('./routes/register');
 const login = require('./routes/login');
 const job = require('./routes/job');
@@ -31,6 +32,10 @@ app.post('/login', login.post);
 // JOB DATA
 app.get('/jobs', jobs.get);
 app.get('/job/:job_id', job.get);
+
+// COLLECTIONS
+app.get('/collections/:user_id', collections.get);
+app.post('/collections', collections.post);
 
 
 app.listen(PORT, () => {
