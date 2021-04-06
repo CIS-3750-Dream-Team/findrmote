@@ -47,3 +47,12 @@ export const profileValidationEmployerSchema = yup.object().shape({
 })
 
 export const zeroValidationSchema = yup.object().shape({});
+
+export const companyTabValidationSchema = yup.object().shape({
+  companyName: yup.string().trim().required('(required)'),
+  location: yup.string().trim().required('(required)'),
+  site: urlValidation,
+  companyEmail: yup.string().trim().email('(enter a valid email)').required('(required)'),
+  companyPhone: yup.string().trim().required('(required)'),
+  companyDescription: yup.string().trim().required('(required)'),
+})

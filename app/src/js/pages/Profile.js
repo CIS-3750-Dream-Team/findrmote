@@ -10,6 +10,7 @@ import {
   HiOutlineBriefcase
 } from "react-icons/hi";
 import ProfileTab from '../components/ProfileTab';
+import CompanyTab from '../components/CompanyTab';
 
 import { Session } from '../utils/contexts';
 
@@ -101,7 +102,8 @@ function Profile(props) {
                 {/* Edit Save Cancel Buttons */}
                 <div className="col-lg-4 align-self-center">
                   {
-                    !editable ? <button onClick={handleEdit} 
+                    // show them on profile tab and company tab only
+                   (page.profile || page.company) && (!editable ? <button onClick={handleEdit} 
                       className="btn btn-primary btn-sm">Edit</button> : (
                       <div className='row'>
                         <div className="col-3">
@@ -116,7 +118,7 @@ function Profile(props) {
                           </button>
                         </div>
                       </div>
-                      )
+                      ))
                   }
                 </div>    
               </div>
@@ -150,13 +152,13 @@ function Profile(props) {
               {page.profile && (
                 <div className="d-flex flex-column">
                   {/* Put the Profile tab contents here (Issue #35) */}
-                  { session ? (<ProfileTab profileInformation={{
+                  { (session.type && session.id) ? (<ProfileTab profileInformation={{
                       firstName: 'Arthur',
                       lastName: 'Read',
                       email: 'john@doe.com',
                     }}  
                     isEditable={editable} 
-                    session={'candidate'}
+                    session={session.type}
                     isSaved={saved}
                     setSaved={setSaved}
                     setEditable={setEditable}
@@ -167,6 +169,21 @@ function Profile(props) {
               {page.company && (
                 <div className="d-flex flex-column">
                   {/* Put the Company tab contents here (Issue #36) */}
+                  {(session.type === 'employer' && session.id) ? 
+                    <CompanyTab 
+                      isEditable={editable} 
+                      isSaved={saved}
+                      companyInformation={{
+                        companyName: 'Desire2Learn',
+                        location: 'Kitchener, ON, Canada',
+                        site: 'https://dtl.com',
+                        companyEmail: 'support@d2l.com',
+                        companyPhone: '1 (222) 333-4445',
+                        companyDescription: 'Courselink company',
+                      }}
+                      setSaved={setSaved}
+                      setEditable={setEditable}
+                    /> : (<h3>Please login to view your profile</h3>)}
                 </div>
               )}
 
