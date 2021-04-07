@@ -9,7 +9,6 @@ const db = require('../utils/db');
 module.exports = {
   // Compare database credentials against req.body
   post: async (req, res) => {
-    console.log(req.body);
     const sent_email = req.body['email'];
     const sent_pass = req.body['password'];
 

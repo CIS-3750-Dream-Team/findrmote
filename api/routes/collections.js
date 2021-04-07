@@ -27,7 +27,7 @@ module.exports = {
         res.json({success: true, error: null, data: state});
       })
       .catch((err) => {
-        logger.info(`(/collections) Failed to pull collections for ${userID}`);
+        logger.error(`(/collections) Failed to pull collections for ${userID}`);
         res.json({success: false, error: 'Failed to load collections', data: null});
       });
   },

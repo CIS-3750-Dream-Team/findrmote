@@ -6,6 +6,7 @@ require('dotenv').config();
 const {ExpressLogger} = require('./utils/log');
 
 const index = require('./routes/index');
+const profile = require('./routes/profile');
 const collections = require('./routes/collections');
 const register = require('./routes/register');
 const login = require('./routes/login');
@@ -33,7 +34,9 @@ app.post('/login', login.post);
 app.get('/jobs', jobs.get);
 app.get('/job/:job_id', job.get);
 
-// COLLECTIONS
+// USER DATA
+app.get('/profile/:user_id', profile.get);
+app.post('/profile/', profile.post);
 app.get('/collections/:user_id', collections.get);
 app.post('/collections', collections.post);
 
