@@ -1,5 +1,5 @@
 const db = require('../utils/db');
-const jobs = require('./jobs.json');
+const jobs = require('./positions.json');
 
 
 const controls = {
@@ -33,7 +33,7 @@ const controls = {
     for (const job of jobs)
       db.query(
         'INSERT INTO jobs (id, type, company, title, description, link, tags) VALUES ($1, $2, $3, $4, $5, $6, $7);',
-        [job.id, job.type, job.company, job.title, job.description, job.link, JSON.stringify(job.tags)]
+        [job.id, job.type, job.company, job.title, job.description, job.company_url, JSON.stringify(getTags())]
       )
         .then((res) => {
           console.log('[+] Inserted job data');
@@ -47,5 +47,20 @@ const controls = {
 
   undefined: () => console.error('[!] No instruction given')
 }
+
+
+function getTags() {
+  const num = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const tags = ['jQuery', 'Javascript', 'HTML', 'CSS', 'Github', 'Firebase', 'Javascript', 'HTML', 'Python', 'Golang', 'Bash', 'Java', 'Unit Testing', 'Git', 'CSS', 'Github', 'Kafka'];
+  const res = [];
+
+  for (let i = 0; i < num(2, 5); i++) {
+    const n = num(0, tags.length-i);
+    res.push(...tags.splice(n, 1));
+  }
+
+  return res;
+}
+
 
 controls[process.argv[2]]();
