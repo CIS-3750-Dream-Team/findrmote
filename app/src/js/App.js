@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Link, useLocation } from 'react-router-dom';
+import { Route, Link, useLocation, useHistory } from 'react-router-dom';
 import { HiOutlineSun, HiOutlineBell, HiOutlineUserCircle, HiOutlineHome } from 'react-icons/hi';
 import { IconContext } from 'react-icons';
 import swal from 'sweetalert';
@@ -16,11 +16,13 @@ import Components from './pages/Components';
 
 function App(props) {
   const location = useLocation();
+  const history = useHistory();
 
   const [userID, setUserID] = useState(null);
   const [userType, setUserType] = useState(null);
   const [collections, setCollections] = useState([]);
   const [page, setPage] = useState({home: true});
+
 
   useEffect(() => {
     setPage({
@@ -32,6 +34,7 @@ function App(props) {
       admin: location.pathname === '/admin'
     });
   }, [location]);
+
 
   useEffect(() => {
     console.log(`user_id: ${userID} (${userType})`);
@@ -57,6 +60,13 @@ function App(props) {
       setCollections([{}, null]);
     }
   }, [userID, userType]);
+
+
+  useEffect(() => {
+    if (page.profile && !userID)
+      history.push('/');
+  }, [page, userID]);
+
 
   const session = {
     // View/update the user's ID (either null or a UUID)
