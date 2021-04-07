@@ -35,6 +35,10 @@ body {
     background-color: $grey2;
   }
 
+  .minh-0 {
+    min-height: 0 !important;
+  }
+
   // Small Shadow
   .shdw-sm,
   .form-control:disabled {

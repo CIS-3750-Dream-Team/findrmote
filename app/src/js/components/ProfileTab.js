@@ -1,5 +1,7 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage, useFormikContext } from 'formik';
+import swal from 'sweetalert';
 import {
   profileValidationCandidateSchema,
   profileValidationEmployerSchema,
@@ -9,44 +11,39 @@ import {
 import '../../scss/profile-tab.scss';
 import '../../scss/error.scss';
 
-const { useEffect } = React;
 
 /**
  * @see - https://formik.org/docs/api/useFormikContext
- * @param {Object} props  
+ * @param {Object} props
  * @returns - A helper React component that uses React Context to grab all the form values of Formik and trigger form submission manually
  */
 function SubmitFormOnSave({ isSaved, setSaved, setEditable, session }) {
-  const {
-    submitForm,
-    isSubmitting,
-    validateForm,
-    setErrors,
-    setTouched,
-  } = useFormikContext();
+  const {submitForm, isSubmitting, validateForm, setErrors, setTouched} = useFormikContext();
 
-  useEffect(async () => {
-    // if form is not valid return
-    if (isSaved && !isSubmitting) {
-      try {
-        const errors = await validateForm();
+  useEffect(() => {
+    (async () => {
+      // if form is not valid return
+      if (isSaved && !isSubmitting) {
+        try {
+          const errors = await validateForm();
 
-        if (errors && Object.keys(errors).length === 0) {
-          // Form is valid, do any success call
-          await submitForm();
-          setEditable(false);
+          if (errors && Object.keys(errors).length === 0) {
+            // Form is valid, do any success call
+            await submitForm();
+            setEditable(false);
+            setSaved(false);
+
+            return;
+          }
+
+          setTouched({ ...touchAllFields(session) });
+          setErrors({ ...errors });
           setSaved(false);
-
-          return;
+        } catch (e) {
+          console.log(e);
         }
-
-        setTouched({ ...touchAllFields(session) });
-        setErrors({ ...errors });
-        setSaved(false);
-      } catch (e) {
-        console.log(e);
       }
-    }
+    })();
   }, [isSaved]);
 
   return null;
@@ -57,11 +54,7 @@ function SubmitFormOnSave({ isSaved, setSaved, setEditable, session }) {
  * @returns - an object with all the form fields set to true
  */
 function touchAllFields(session) {
-  let touched = {
-    firstName: true,
-    lastName: true,
-    email: true,
-  };
+  let touched = {firstName: true, lastName: true, email: true};
 
   if (session === 'candidate') {
     touched = {
@@ -69,10 +62,10 @@ function touchAllFields(session) {
       github: true,
       linkedIn: true,
       personalSite: true,
-      receiveNotification: true,
-      makeVisibleEmployers: true,
+      getNotifications: true,
+      employerVisible: true,
       startDate: true,
-      endDate: true,
+      endDate: true
     };
 
     return touched;
@@ -84,100 +77,107 @@ function touchAllFields(session) {
 /**
  * Function that sets up the initial values for form population and the validation schema
  * @param {string} session - Candidate or Employer
- * @param {Object} profileInformation - Pofile information about the user
+ * @param {Object} userData - Pofile information about the user
  * @returns a tuple of the initial form values and the validation schema based on the session
  */
-function getInitialFormValuesAndValidationSchema(session, profileInformation) {
-  const {
-    firstName,
-    lastName,
-    email,
-    github,
-    linkedIn,
-    personalSite,
-    receiveNotification,
-    makeVisibleEmployers,
-    startDate,
-    endDate,
-  } = profileInformation;
-
-  let initialFormValues = {};
+function getInitialValuesAndSchema(session, userData) {
+  let initialValues = {};
   let validationSchema = zeroValidationSchema;
 
-  if (session === 'candidate') {
-    // set initial values for candidate
-    initialFormValues = {
-      firstName: firstName != null ? firstName : '',
-      lastName: lastName != null ? lastName : '',
-      email: email != null ? email : '',
-      github: github != null ? github : '',
-      linkedIn: linkedIn != null ? linkedIn : '',
-      personalSite: personalSite != null ? personalSite : '',
-      receiveNotification: receiveNotification != null ? receiveNotification : false,
-      makeVisibleEmployers: makeVisibleEmployers != null ? makeVisibleEmployers : false,
-      startDate: startDate != null ? startDate : '',
-      endDate: endDate != null ? endDate : '',
-    };
+  if (userData) {
+    if (session === 'candidate') {
+      // Set initial values for candidate
+      initialValues = {
+        firstName: userData?.f_name ?? '',
+        lastName: userData?.l_name ?? '',
+        email: userData?.email ?? '',
+        education: userData?.meta?.education ?? '',
+        degree: userData?.meta?.education_lvl ?? '',
+        github: userData?.meta?.lnk_github ?? '',
+        linkedIn: userData?.meta?.lnk_linkedin ?? '',
+        personalSite: userData?.meta?.lnk_website ?? '',
+        startDate: userData?.meta?.s_date ?? '',
+        endDate: userData?.meta?.e_date ?? '',
+        getNotifications: userData?.notifications ?? false,
+        employerVisible: userData?.employer_visible ?? false,
+      };
 
-    // set validation for candidate
-    validationSchema = profileValidationCandidateSchema;
-  } else if (session === 'employer') {
-    // set initial values for employer
-    initialFormValues = {
-      firstName: firstName != null ? firstName : '',
-      lastName: lastName != null ? lastName : '',
-      email: email != null ? email : '',
-    };
+      // Set validation for candidate
+      validationSchema = profileValidationCandidateSchema;
 
-    // set validation for employer
-    validationSchema = profileValidationEmployerSchema;
+    } else if (session === 'employer') {
+      // Set initial values for employer
+      initialValues = {
+        firstName: userData?.f_name ?? '',
+        lastName: userData?.l_name ?? '',
+        email: userData?.email ?? ''
+      };
+
+      // Set validation for employer
+      validationSchema = profileValidationEmployerSchema;
+    }
   }
 
-  return [initialFormValues, validationSchema];
+  return [initialValues, validationSchema];
 }
+
 
 /**
  * @param {Object} props
  * @returns - The React Component that displays the Profile Form
  */
-export default function ProfileTab({
-  session,
-  isEditable,
-  profileInformation,
-  isSaved,
-  setSaved,
-  setEditable,
-}) {
-  const [initialFormValues, validationSchema] = getInitialFormValuesAndValidationSchema(
-    session,
-    profileInformation
-  );
+export default function ProfileTab({data, session, isEditable, isSaved, setSaved, setEditable}) {
+  const [initialValues, validationSchema] = getInitialValuesAndSchema(session.type, data);
+  const history = useHistory();
+
+  function updateProfile(values) {
+    console.log(values)
+    fetch(`${process.env.REACT_APP_API_URL}/profile`, {
+      method: 'POST',
+      body: JSON.stringify({values, userID: session.id, type: session.type, form: 'profile'}),
+      headers: {'Content-Type': 'application/json'},
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          swal({icon: 'success', title: 'Profile Updated!'});
+
+          history.push('/');
+          history.push('/profile');
+
+        } else {
+          swal({icon: 'error', title: 'Uh oh!', text: res.error});
+        }
+      })
+      .catch((err) => {
+        swal({icon: 'error', title: 'Uh oh!', text: 'Failed to update your profile!'});
+        console.error(err);
+      });
+  }
+
   return (
     <div className='my-1 px-2 justify-content-between profile-tab'>
       <Formik
-        initialValues={initialFormValues}
+        initialValues={initialValues}
         validationSchema={validationSchema}
+        onSubmit={updateProfile}
         validateOnBlur
-        onSubmit={async (values) => console.log('submit', values)} // form submission handler - connect with the backend here
       >
         {(formikProps) => {
-          const props = {
-            ...formikProps,
-            isEditable,
-          };
+          const props = {...formikProps, isEditable};
 
           return (
             <div>
               <ProfileCommon {...props} />
-              <div className='mb-3 mt-1 profile-tab--border-bottom'></div>
-              {session === 'candidate' ? <ProfileCandidateOptional {...props} /> : null}
-              
+              <div className='divider mx-2 mb-4'></div>
+              {session.type === 'candidate' ? <ProfileCandidateOptional {...props} /> : null}
+
               {/* A React Component that handles the form submission trigger */}
               <SubmitFormOnSave
                 isSaved={isSaved}
                 setSaved={setSaved}
                 setEditable={setEditable}
-                session={session}
+                session={session.type}
               />
             </div>
           );
@@ -186,6 +186,7 @@ export default function ProfileTab({
     </div>
   );
 }
+
 
 /**
  * @param {Object} props 
@@ -197,16 +198,10 @@ function ProfileCommon({ errors, touched, isEditable }) {
       {/* First Name Field */}
       <div className='form-group col-12 col-md-6'>
         <label
-          className={
-            errors?.firstName && touched?.firstName
-              ? 'error ms-2 mb-1'
-              : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.firstName && touched?.firstName ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='firstName'
         >
-          <span className={errors?.firstName && touched?.firstName ? 'fw-bolder' : null}>
-            First Name
-          </span>{' '}
+          <span className={errors?.firstName && touched?.firstName ? 'fw-bolder me-1' : null}> First Name </span>
           <ErrorMessage name='firstName' />
         </label>
         <Field
@@ -223,14 +218,10 @@ function ProfileCommon({ errors, touched, isEditable }) {
       {/* Last Name Field */}
       <div className='form-group col-12 col-md-6'>
         <label
-          className={
-            errors?.lastName && touched?.lastName ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.lastName && touched?.lastName ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='lastName'
         >
-          <span className={errors?.lastName && touched?.lastName ? 'fw-bolder' : null}>
-            Last Name
-          </span>{' '}
+          <span className={errors?.lastName && touched?.lastName ? 'fw-bolder me-1' : null}> Last Name </span>
           <ErrorMessage name='lastName' />
         </label>
         <Field
@@ -247,14 +238,10 @@ function ProfileCommon({ errors, touched, isEditable }) {
       {/* Email Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.email && touched?.email ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.email && touched?.email ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='email'
         >
-          <span className={errors?.email && touched?.email ? 'fw-bolder' : null}>
-            Email
-          </span>{' '}
+          <span className={errors?.email && touched?.email ? 'fw-bolder me-1' : null}> Email </span>
           <ErrorMessage name='email' />
         </label>
         <Field
@@ -271,6 +258,7 @@ function ProfileCommon({ errors, touched, isEditable }) {
   );
 }
 
+
 /**
  * @param {Object} props 
  * @returns - The React Form with optional fields for candidates
@@ -281,16 +269,10 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       {/* Education Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.education && touched?.education
-              ? 'error ms-2 mb-1'
-              : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.education && touched?.education ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='education'
         >
-          <span className={errors?.education && touched?.education ? 'fw-bolder' : null}>
-            Education
-          </span>{' '}
+          <span className={errors?.education && touched?.education ? 'fw-bolder me-1' : null}> Education </span>
           <ErrorMessage name='education' />
         </label>
         <Field
@@ -307,14 +289,10 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       {/* Degree Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.degree && touched?.degree ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.degree && touched?.degree ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='degree'
         >
-          <span className={errors?.degree && touched?.degree ? 'fw-bolder' : null}>
-            Degree
-          </span>{' '}
+          <span className={errors?.degree && touched?.degree ? 'fw-bolder me-1' : null}> Degree </span>
           <ErrorMessage name='degree' />
         </label>
         <Field
@@ -331,16 +309,10 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       {/* Start Date Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.startDate && touched?.startDate
-              ? 'error ms-2 mb-1'
-              : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.startDate && touched?.startDate ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='startDate'
         >
-          <span className={errors?.startDate && touched?.startDate ? 'fw-bolder' : null}>
-            Start Date
-          </span>{' '}
+          <span className={errors?.startDate && touched?.startDate ? 'fw-bolder' : null}> Start Date </span>
           <ErrorMessage name='startDate' />
         </label>
         <Field
@@ -357,14 +329,10 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       {/* End date Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.endDate && touched?.endDate ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.endDate && touched?.endDate ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='endDate'
         >
-          <span className={errors?.endDate && touched?.endDate ? 'fw-bolder' : null}>
-            End Date
-          </span>{' '}
+          <span className={errors?.endDate && touched?.endDate ? 'fw-bolder me-1' : null}> End Date </span>
           <ErrorMessage name='endDate' />
         </label>
         <Field
@@ -381,14 +349,10 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       {/* Github Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.github && touched?.github ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.github && touched?.github ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='github'
         >
-          <span className={errors?.github && touched?.github ? 'fw-bolder' : null}>
-            Github
-          </span>{' '}
+          <span className={errors?.github && touched?.github ? 'fw-bolder me-1' : null}> Github </span>
           <ErrorMessage name='github' />
         </label>
         <Field
@@ -405,14 +369,10 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       {/* LinkedIn Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.linkedIn && touched?.linkedIn ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.linkedIn && touched?.linkedIn ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='linkedIn'
         >
-          <span className={errors?.linkedIn && touched?.linkedIn ? 'fw-bolder' : null}>
-            LinkedIn
-          </span>{' '}
+          <span className={errors?.linkedIn && touched?.linkedIn ? 'fw-bolder me-1' : null}> LinkedIn </span>
           <ErrorMessage name='linkedIn' />
         </label>
         <Field
@@ -429,18 +389,12 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       {/* Personal Website Field */}
       <div className='form-group col-12'>
         <label
-          className={
-            errors?.personalSite && touched?.personalSite
-              ? 'error ms-2 mb-1'
-              : 'txt-0 ms-2 mb-1'
-          }
+          className={errors?.personalSite && touched?.personalSite ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
           htmlFor='personalSite'
         >
-          <span
-            className={errors?.personalSite && touched?.personalSite ? 'fw-bolder' : null}
-          >
-            Personal Website
-          </span>{' '}
+          <span className={errors?.personalSite && touched?.personalSite ? 'fw-bolder me-1' : null}>
+            Personal Website 
+          </span>
           <ErrorMessage name='personalSite' />
         </label>
         <Field
@@ -455,64 +409,44 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       </div>
 
       {/* Make Account Visible Checkbox */}
-      <div className='form-group col-12'>
+      <div className='form-group col-12 ms-2'>
         <Field
           type='checkbox'
-          id='makeVisibleEmployers'
-          name='makeVisibleEmployers'
+          id='employerVisible'
+          name='employerVisible'
           className='form-check-input'
           autoComplete='on'
           disabled={!isEditable}
         />
         <label
-          className={
-            errors?.makeVisibleEmployers && touched?.makeVisibleEmployers
-              ? 'error ms-2 mb-1'
-              : 'txt-0 ms-2 mb-1'
-          }
-          htmlFor='makeVisibleEmployers'
+          className={errors?.employerVisible && touched?.employerVisible ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
+          htmlFor='employerVisible'
         >
-          <span
-            className={
-              errors?.makeVisibleEmployers && touched?.makeVisibleEmployers
-                ? 'fw-bolder'
-                : null
-            }
-          >
+          <span className={errors?.employerVisible && touched?.employerVisible ? 'fw-bolder me-1' : null}>
             Make my account visible to employers
-          </span>{' '}
-          <ErrorMessage name='makeVisibleEmployers' />
+          </span>
+          <ErrorMessage name='employerVisible' />
         </label>
       </div>
 
       {/* Receive Notification Checkbox */}
-      <div className='form-group col-12'>
+      <div className='form-group col-12 ms-2'>
         <Field
           type='checkbox'
-          id='receiveNotification'
-          name='receiveNotification'
+          id='getNotifications'
+          name='getNotifications'
           className='form-check-input'
           autoComplete='on'
           disabled={!isEditable}
         />
         <label
-          className={
-            errors?.receiveNotification && touched?.receiveNotification
-              ? 'error ms-2 mb-1'
-              : 'txt-0 ms-2 mb-1'
-          }
-          htmlFor='receiveNotification'
+          className={errors?.getNotifications && touched?.getNotifications ? 'error ms-2 mb-1' : 'txt-0 ms-2 mb-1'}
+          htmlFor='getNotifications'
         >
-          <span
-            className={
-              errors?.receiveNotification && touched?.receiveNotification
-                ? 'fw-bolder'
-                : null
-            }
-          >
+          <span className={errors?.getNotifications && touched?.getNotifications ? 'fw-bolder me-1' : null}>
             Receive Notification
-          </span>{' '}
-          <ErrorMessage name='receiveNotification' />
+          </span>
+          <ErrorMessage name='getNotifications' />
         </label>
       </div>
     </Form>

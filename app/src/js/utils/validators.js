@@ -34,8 +34,8 @@ export const profileValidationCandidateSchema = yup.object().shape({
   github: urlValidation,
   linkedIn: urlValidation,
   personalSite: urlValidation,
-  receiveNotification: yup.boolean(),
-  makeVisibleEmployers: yup.boolean(),
+  getNotifications: yup.boolean(),
+  employerVisible: yup.boolean(),
   startDate: yup.date().notRequired(),
   endDate: yup.date().notRequired().when('startDate', (startDate, schema) => (startDate && schema.min(startDate, '(cannot be smaller than start date)')))
 });
@@ -44,7 +44,7 @@ export const profileValidationEmployerSchema = yup.object().shape({
   firstName: firstNameValidation,
   lastName: lastNameValidation,
   email: emailValidation,
-})
+});
 
 export const zeroValidationSchema = yup.object().shape({});
 
@@ -55,4 +55,4 @@ export const companyTabValidationSchema = yup.object().shape({
   companyEmail: yup.string().trim().email('(enter a valid email)').required('(required)'),
   companyPhone: yup.string().trim().required('(required)'),
   companyDescription: yup.string().trim().required('(required)'),
-})
+});
