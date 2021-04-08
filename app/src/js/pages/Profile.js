@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 import {
   HiOutlineViewGrid,
@@ -13,6 +14,8 @@ import {
 
 import ProfileTab from '../components/ProfileTab';
 import CompanyTab from '../components/CompanyTab';
+import JobTable from '../components/JobTable';
+import JobControl from '../components/JobControl';
 import { Session } from '../utils/contexts';
 
 import '../../scss/profile.scss';
@@ -20,11 +23,12 @@ import dummy from '../../assests/dummy.png';
 
 
 function Profile(props) {
-  const session = useContext(Session);
   const [data, setData] = useState(null);
   const [page, setPage] = useState({profile: true});
   const [saved, setSaved] = useState(false);
   const [editable, setEditable] = useState(false);
+  const session = useContext(Session);
+  const history = useHistory();
 
   useEffect(() => {
     if (!data) {
@@ -67,14 +71,14 @@ function Profile(props) {
       classes: 'btn d-flex align-items-center fs-5 txt-0 mb-3 me-2'
     },
     {
+      label: 'Liked Jobs',
+      name: 'likes',
+      icon: <HiOutlineHeart size={25}/>
+    },
+    {
       label: 'Bookmarks',
       name: 'bookmarks',
       icon: <HiOutlineBookmark size={25}/>
-    },
-    {
-      label: 'Favourites',
-      name: 'favourites',
-      icon: <HiOutlineHeart size={25}/>
     },
     {
       label: 'Applied Jobs',
@@ -107,6 +111,24 @@ function Profile(props) {
   const handleSave = () => {
     // when save is clicked the saved value gets passed down and triggers a form submission
     setSaved(true);
+  }
+
+  function getTable(collection) {
+    const jobs = JSON.parse(localStorage.getItem('jobs'));
+
+    const header = ['Position', 'Company Name', 'Edit'];
+
+    const rows = Object.entries(session.collections.all())
+      .filter(row => row[1]?.[collection])
+      .map(row => {
+        const job = jobs.filter(({id}) => id === row[0])[0];
+        return {
+          onClick: () => history.push(`/job:${row[0]}`),
+          items: [job.company, job.title, <JobControl jobID={row[0]} settings={{[collection]: true}} size='1.5em' />]
+        };
+      });
+
+    return (<JobTable header={header} rows={rows} />);
   }
 
 
@@ -199,38 +221,38 @@ function Profile(props) {
                   </div>
                 )}
 
-                {page.bookmarks && (
+                {page.likes && (
                   <div className="d-flex flex-column">
-                    <h1 className="fw-normal mb-3"> Bookmarks </h1>
-                    {/* Put the bookmarks table here */}
+                    <h1 className="fw-normal mb-3"> Liked Jobs </h1>
+                    {getTable('liked')}
                   </div>
                 )}
 
-                {page.favourites && (
+                {page.bookmarks && (
                   <div className="d-flex flex-column">
-                    <h1 className="fw-normal mb-3"> Favourites </h1>
-                    {/* Put the favourites table here */}
+                    <h1 className="fw-normal mb-3"> Bookmarks </h1>
+                    {getTable('bookmarked')}
                   </div>
                 )}
 
                 {page.applied && (
                   <div className="d-flex flex-column">
                     <h1 className="fw-normal mb-3"> Applied Jobs </h1>
-                    {/* Put the Applied Jobs table here */}
+                    {getTable('applied')}
                   </div>
                 )}
 
                 {page.hidden && (
                   <div className="d-flex flex-column">
                     <h1 className="fw-normal mb-3"> Hidden Jobs </h1>
-                    {/* Put the Hidden Jobs table here */}
+                    {getTable('hidden')}
                   </div>
                 )}
 
                 {page.listings && (
                   <div className="d-flex flex-column">
-                    {/* Put the Job Listings table here */}
                     <h1 className="fw-normal mb-3"> My Job Listings </h1>
+                    {getTable('listings')}
                   </div>
                 )}
               </div>

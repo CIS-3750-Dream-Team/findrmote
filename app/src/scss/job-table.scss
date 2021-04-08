@@ -1,0 +1,37 @@
+/* job-table.scss
+ * April 6, 2021
+ * JobTable component Styling
+ */
+
+ @import 'main';
+ @import 'custom';
+
+
+.job-table {
+  border: 1px solid $grey2;
+  border-radius: 0.5rem;
+  overflow: hidden;
+
+  .header {
+    background-color: $grey1;
+    border-bottom: 1px solid $grey2;
+  }
+
+  .border-btm {
+    border-bottom: 1px solid $grey1;
+  }
+
+  .row .row:last-child .col {
+    border: none;
+  }
+
+  .header .col:last-child,
+  .row .row .col:last-child {
+    display: flex;
+    justify-content: end;
+  }
+
+  .row .row {
+    cursor: pointer;
+  }
+}
