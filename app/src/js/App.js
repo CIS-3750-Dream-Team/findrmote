@@ -78,7 +78,11 @@ function App(props) {
     setType: (type) => setUserType(type),
 
     // View/update user's liked, bookmarked, applied, and hidden jobs
-    collections: {get: (id) => collections[0]?.[id], sync: collections[1]},
+    collections: {
+      all: () => collections[0],
+      get: (id) => collections[0]?.[id],
+      sync: collections[1]
+    },
     setCollection: (jobID, state, sync=null) => {
       setCollections(prev => [({...prev[0], [jobID]: state}), sync]);
     }
