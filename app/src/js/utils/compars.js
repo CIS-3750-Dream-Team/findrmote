@@ -6,10 +6,10 @@
 
 // Initial sorting function
 function noSort(job1, job0) {
-  return 0
+  return 0;
 }
 
 
 module.exports = {
   noSort
-}
+};

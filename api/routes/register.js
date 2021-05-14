@@ -43,10 +43,10 @@ module.exports = {
       [user_id, type == 'candidate' ? 0 : 1, f_name, l_name, email, pass, JSON.stringify(meta)]
     )
       .then((result) => {
-        res.json({success: true, error: null, data: {user_id}});
+        res.json({ success: true, error: null, data: { user_id } });
       })
       .catch((err) => {
-        res.json({success: false, error: 'Failed to register user', data: null});
+        res.json({ success: false, error: 'Failed to register user', data: null });
       });
   }
 }

@@ -1,12 +1,13 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 
 import { Session } from '../utils/contexts';
 import { loginValidationSchema } from '../utils/validators';
 
 import '../../scss/error.scss';
 import '../../scss/login.scss';
+
 
 /**
  * @description The Login Page that lets the user login using their email and password
@@ -23,7 +24,7 @@ export default function Login(props) {
     fetch(`${process.env.REACT_APP_API_URL}/login`, {
       method: 'POST',
       body: JSON.stringify(values),
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())
       .then((res) => {

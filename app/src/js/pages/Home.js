@@ -10,7 +10,7 @@ import SearchBar from '../components/SearchBar';
 import '../../scss/home.scss';
 
 
-function Home(props) {
+export default function Home(props) {
   const [size, setSize] = useState([0, 0]);
   const [rows, setRows] = useState(4);
   const [jobs, setJobs] = useState([]);
@@ -77,25 +77,25 @@ function Home(props) {
 
 
   return (
-    <div id="home" className="d-flex flex-column px-3">
-      <div className="criteria row justify-content-center mt-5">
+    <div id='home' className='d-flex flex-column px-3'>
+      <div className='criteria row justify-content-center mt-5'>
         {/* Job Criteria Row (Desktop) */}
-        <div className="d-none d-sm-flex row">
-          <div className="col ps-0"> <SortSelect setSort={setSort}/> </div>
-          <div className="col mx-3 mx-lg-5"> <FilterSelect setFilter={setFilter} jobs={jobs}/> </div>
-          <div className="col-4 col-lg-6 pe-0"> <SearchBar setFilter={setFilter}/> </div>
+        <div className='d-none d-sm-flex row'>
+          <div className='col ps-0'> <SortSelect setSort={setSort} /> </div>
+          <div className='col mx-3 mx-lg-5'> <FilterSelect setFilter={setFilter} jobs={jobs} /> </div>
+          <div className='col-4 col-lg-6 pe-0'> <SearchBar setFilter={setFilter} /> </div>
         </div>
         {/* Job Criteria Column (Mobile) */}
-        <div className="d-block d-sm-none col-10">
-          <div className="row"> <SortSelect setSort={setSort}/> </div>
-          <div className="row my-3"> <FilterSelect setFilter={setFilter} jobs={jobs}/> </div>
-          <div className="row"> <SearchBar setFilter={setFilter}/> </div>
+        <div className='d-block d-sm-none col-10'>
+          <div className='row'> <SortSelect setSort={setSort} /> </div>
+          <div className='row my-3'> <FilterSelect setFilter={setFilter} jobs={jobs} /> </div>
+          <div className='row'> <SearchBar setFilter={setFilter} /> </div>
         </div>
       </div>
 
-      <div className="content row justify-content-center">
-        <div className="col-sm col-10 mt-4 mt-sm-5 px-3">
-          <div className="row">
+      <div className='content row justify-content-center'>
+        <div className='col-sm col-10 mt-4 mt-sm-5 px-3'>
+          <div className='row'>
             {jobs
               .sort(comparator)
               .filter(filter)
@@ -106,7 +106,7 @@ function Home(props) {
                 return cols;
               }, [])
               .map((col, i) => (
-                <div key={i} className="col mb-5">
+                <div key={i} className='col mb-5'>
                   {col.map((job, i) => <JobCard key={i} job={job} />)}
                 </div>
               ))
@@ -117,5 +117,3 @@ function Home(props) {
     </div>
   );
 }
-
-export default Home;

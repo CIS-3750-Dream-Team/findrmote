@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Component } from 'react';
 import { useHistory } from 'react-router-dom';
 import swal from 'sweetalert';
 import {
@@ -20,16 +20,17 @@ import '../../scss/job-control.scss';
 // TODO: create a tooltip component or use react-tooltip and wrap the controls around the tooltip. Team discussion required
 
 /** JobControl Component
- * @prop    {String}        jobID   The ID of the associated job
- * @prop    {Number}        likes   (TBD) The number of likes the job has
- * @prop    {String}        size    The size of the control icons (measured in em)
- * @returns {ReactElement}          The Job Card component with job title, company, job details
+ * Four buttons that allow a user to mark a job as liked, bookmarked, applied, or hidden
+ * @prop {String}   jobID   The ID of the associated job
+ * @prop {Number}   likes   (TBD) The number of likes the job has
+ * @prop {String}   size    The size of the control icons (measured in em)
+ * @returns {Component}
  */
-function JobControls({jobID, likes, settings, size='1em'}) {
-  const {id: userID, collections, setCollection} = useContext(Session);
+export default function JobControls({ jobID, likes, settings, size = '1em' }) {
+  const { id: userID, collections, setCollection } = useContext(Session);
   const history = useHistory();
 
-  settings = settings || {liked: true, bookmarked: true, applied: true, hidden: true};
+  settings = settings || { liked: true, bookmarked: true, applied: true, hidden: true };
 
   useEffect(() => {
     const state = collections.get(jobID);
@@ -37,9 +38,9 @@ function JobControls({jobID, likes, settings, size='1em'}) {
     if (collections?.sync === jobID) {
       if (userID) {
         fetch(`${process.env.REACT_APP_API_URL}/collections`, {
-          headers: {'Content-Type': 'application/json'},
+          headers: { 'Content-Type': 'application/json' },
           method: 'POST',
-          body: JSON.stringify({user_id: userID, job_id: jobID, state}),
+          body: JSON.stringify({ user_id: userID, job_id: jobID, state }),
         })
           .then((res) => res.json())
           .then((res) => {
@@ -59,8 +60,8 @@ function JobControls({jobID, likes, settings, size='1em'}) {
         swal({
           icon: 'warning', title: 'Uh oh!', text: 'You must be logged in to use collections',
           buttons: {
-            confirm: {text: 'Sign up!', value: true},
-            cancel: {text: 'Cancel', value: false, visible: true}
+            confirm: { text: 'Sign up!', value: true },
+            cancel: { text: 'Cancel', value: false, visible: true }
           }
         })
           .then((value) => {
@@ -73,7 +74,7 @@ function JobControls({jobID, likes, settings, size='1em'}) {
 
   function setState(collection, e) {
     const c = collections.get(jobID);
-    setCollection(jobID, ({...c, [collection]: !c?.[collection]}), jobID);
+    setCollection(jobID, ({ ...c, [collection]: !c?.[collection] }), jobID);
     e.stopPropagation();
     e.preventDefault();
   }
@@ -128,5 +129,3 @@ function JobControls({jobID, likes, settings, size='1em'}) {
     </div>
   );
 }
-
-export default JobControls;

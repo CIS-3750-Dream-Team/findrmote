@@ -1,18 +1,20 @@
 import React from 'react';
-import {HiChevronDown, HiChevronRight, HiOutlineXCircle} from 'react-icons/hi';
+import { HiChevronDown, HiChevronRight, HiOutlineXCircle } from 'react-icons/hi';
 
 import '../../scss/dropdown.scss';
 
 
 /** Dropdown Component
- * @prop {String}   className   Any classes passed to the root component
- * @prop {String}   id          The id passed to the dropdown-toggle (for bootstrap)
- * @prop {String}   name        The label for the main dropdown
- * @prop {Array}    options     The array of options for the dropdown
- * @prop {Function} clear       A function that clears the selection
- * @prop {Array}    controls    Dropdown items that can be given special functionality
+ * A general purpose dropdown component
+ * @prop {String}      className   Any classes passed to the root component
+ * @prop {String}      id          The id passed to the dropdown-toggle (for bootstrap)
+ * @prop {String}      name        The label for the main dropdown
+ * @prop {Array}       options     The array of options for the dropdown
+ * @prop {Function}    clear       A function that clears the selection
+ * @prop {Array}       controls    Dropdown items that can be given special functionality
+ * @returns {Component}
  */
-function Dropdown(props) {
+export default function Dropdown(props) {
   function setValue(e, label) {
     props.onClick?.(label);
     e.stopPropagation();
@@ -27,11 +29,11 @@ function Dropdown(props) {
     return (
       <li key={i} className='dropdown-item' onClick={e => setValue(e, label)}>
         {label}
-        <input 
-          id={`${props.name}${i}`} 
+        <input
+          id={`${props.name}${i}`}
           className='form-check-input ms-3'
           checked={active || false}
-          onChange={() => {}}
+          onChange={() => { }}
           type='checkbox'
         />
       </li>
@@ -45,7 +47,7 @@ function Dropdown(props) {
           {label} <HiChevronRight />
         </button>
         <ul className='dropdown-menu'>
-          {options.map(({label, active}, j) => DropdownItem(label, active, j))}
+          {options.map(({ label, active }, j) => DropdownItem(label, active, j))}
         </ul>
       </li>
     );
@@ -73,7 +75,7 @@ function Dropdown(props) {
 
         {props.clear ? <div className='divider'></div> : null}
 
-        {props.controls?.map(({label, icon, onClick, stage}, i) => (
+        {props.controls?.map(({ label, icon, onClick, stage }, i) => (
           <li key={i} className='dropdown-item' onClick={e => onClick(stage) || e.stopPropagation()}>
             {label} {icon}
           </li>
@@ -81,7 +83,7 @@ function Dropdown(props) {
 
         {props.controls ? <div className='divider'></div> : null}
 
-        {props.options?.map(({label, active, options}, i) => (
+        {props.options?.map(({ label, active, options }, i) => (
           // If the option has options then it's a submenu, otherwise, just an item
           options ? SubMenu(label, options, i) : DropdownItem(label, active, i)
         ))}
@@ -89,5 +91,3 @@ function Dropdown(props) {
     </div>
   );
 }
-
-export default Dropdown;

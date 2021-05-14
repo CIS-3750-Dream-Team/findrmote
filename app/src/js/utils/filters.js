@@ -12,4 +12,4 @@ function allowAll(job) {
 
 module.exports = {
   allowAll
-}
+};

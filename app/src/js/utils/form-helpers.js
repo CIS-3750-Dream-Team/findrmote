@@ -1,9 +1,9 @@
 export function touchAllFields(...fields) {
-    const touchedFields = {};
+  const touchedFields = {};
 
-    for (let field of fields) {
-        touchedFields[field] = true;
-    }
+  for (let field of fields) {
+    touchedFields[field] = true;
+  }
 
-    return touchedFields;
+  return touchedFields;
 }
