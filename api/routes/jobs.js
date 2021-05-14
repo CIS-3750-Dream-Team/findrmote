@@ -11,12 +11,12 @@ module.exports = {
   get: async (req, res) => {
     db.query('SELECT id, type, company, title, created, tags, likes FROM jobs WHERE status=0')
       .then((result) => {
-        const rows = result.rows.map(r => ({...r, tags: JSON.parse(r.tags)}));
+        const rows = result.rows.map(r => ({ ...r, tags: JSON.parse(r.tags) }));
 
-        res.json({success: true, error: null, data: rows});
+        res.json({ success: true, error: null, data: rows });
       })
       .catch((err) => {
-        res.json({success: false, error: 'Failed to load job data', data: null});
+        res.json({ success: false, error: 'Failed to load job data', data: null });
       });
   }
 }

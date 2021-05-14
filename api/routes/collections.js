@@ -4,7 +4,7 @@
  */
 
 const db = require('../utils/db');
-const {Logger} = require('../utils/log');
+const { Logger } = require('../utils/log');
 
 
 const logger = Logger('findrmote API');
@@ -19,22 +19,22 @@ module.exports = {
         logger.info(`(/collections) Pulled collections for ${userID}`);
 
         const state = result.rows.reduce(
-          (state, {job_id, liked, bookmarked, applied, hidden}) => ({
-            ...state, [job_id]: {liked, bookmarked, applied, hidden}
+          (state, { job_id, liked, bookmarked, applied, hidden }) => ({
+            ...state, [job_id]: { liked, bookmarked, applied, hidden }
           }),
         {});
 
-        res.json({success: true, error: null, data: state});
+        res.json({ success: true, error: null, data: state });
       })
       .catch((err) => {
         logger.error(`(/collections) Failed to pull collections for ${userID}`);
-        res.json({success: false, error: 'Failed to load collections', data: null});
+        res.json({ success: false, error: 'Failed to load collections', data: null });
       });
   },
 
   // Mark a job as either liked, bookrmarked, applied, or hidden
   post: async (req, res) => {
-    const {user_id, job_id, state} = req.body;
+    const { user_id, job_id, state } = req.body;
 
     // First attempt to update the record
     db.query(
@@ -44,7 +44,7 @@ module.exports = {
       .then((result) => {
         if (result.rowCount) { // Update was successful
           logger.info(`(/collections) Updated collection for ${user_id}`);
-          res.json({success: true, error: null, data: null});
+          res.json({ success: true, error: null, data: null });
 
         } else { // Update failed because no row exists for the job yet
           db.query(
@@ -53,17 +53,17 @@ module.exports = {
           )
             .then((result) => {
               logger.info(`(/collections) Started collection for ${user_id}`);
-              res.json({success: true, error: null, data: null});
+              res.json({ success: true, error: null, data: null });
             })
             .catch((err) => {
               logger.error(`(/collections) Failed to start collection for ${user_id}:\n${err}`);
-              res.json({success: false, error: 'Failed to save!', data: null});
+              res.json({ success: false, error: 'Failed to save!', data: null });
             });
         }
       })
       .catch((err) => {
         logger.error(`(/collections) Failed to update collection for ${user_id}:\n${err}`);
-        res.json({success: false, error: 'Failed to save!', data: null});
+        res.json({ success: false, error: 'Failed to save!', data: null });
       });
   }
 }

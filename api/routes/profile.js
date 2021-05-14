@@ -4,7 +4,7 @@
  */
 
 const db = require('../utils/db');
-const {Logger} = require('../utils/log');
+const { Logger } = require('../utils/log');
 
 
 const logger = Logger('findrmote API');
@@ -16,7 +16,7 @@ module.exports = {
     userID = req.params['user_id'].replace(':', '');
 
     if (!userID.length) {
-      res.json({success: false, error: 'No user ID given', data: null}); return;
+      res.json({ success: false, error: 'No user ID given', data: null }); return;
     }
 
     db.query('SELECT * FROM users WHERE id=$1 AND status=0', [userID])
@@ -26,11 +26,11 @@ module.exports = {
         userData.meta = JSON.parse(userData.meta);
 
         logger.info(`(/profile) Pulled profile for ${userID}`);
-        res.json({success: true, error: null, data: userData});
+        res.json({ success: true, error: null, data: userData });
       })
       .catch((err) => {
         logger.info(`(/profile) Failed to load user data for ${userID}`);
-        res.json({success: false, error: 'Failed to load user data', data: null});
+        res.json({ success: false, error: 'Failed to load user data', data: null });
       });
   },
 
@@ -64,11 +64,11 @@ module.exports = {
       )
         .then((result) => {
           logger.info(`(/profile) Updated candidate profile for ${userID}`);
-          res.json({success: true, error: null, data: null});
+          res.json({ success: true, error: null, data: null });
         })
         .catch((err) => {
           logger.info(`(/profile) Failed to update candidate profile for ${userID}`);
-          res.json({success: false, error: 'Failed to update profile', data: null});
+          res.json({ success: false, error: 'Failed to update profile', data: null });
         });
 
     } else {
@@ -86,22 +86,22 @@ module.exports = {
         db.query('UPDATE users SET email=$2, meta=$3 WHERE id=$1;', [user_id, email, JSON.stringify(meta)])
           .then((result) => {
             logger.info(`(/profile) Updated company information for ${userID}`);
-            res.json({success: true, error: null, data: null});
+            res.json({ success: true, error: null, data: null });
           })
           .catch((err) => {
             logger.error(`(/profile) Failed to update company information for ${userID}`);
-            res.json({success: false, error: 'Failed to update profile', data: null});
+            res.json({ success: false, error: 'Failed to update profile', data: null });
           });
 
       } else {
         db.query('UPDATE users SET f_name=$2, l_name=$3, email=$4 WHERE id=$1;', [user_id, f_name, l_name, email])
           .then((result) => {
             logger.info(`(/profile) Updated company profile for ${userID}`);
-            res.json({success: true, error: null, data: null});
+            res.json({ success: true, error: null, data: null });
           })
           .catch((err) => {
             logger.error(`(/profile) Failed to update company profile for ${userID}`);
-            res.json({success: false, error: 'Failed to update profile', data: null});
+            res.json({ success: false, error: 'Failed to update profile', data: null });
           });
       }
     }

@@ -3,7 +3,7 @@ var cors = require('cors')
 
 require('dotenv').config();
 
-const {ExpressLogger} = require('./utils/log');
+const { ExpressLogger } = require('./utils/log');
 
 const index = require('./routes/index');
 const profile = require('./routes/profile');

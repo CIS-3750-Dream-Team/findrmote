@@ -13,10 +13,10 @@ module.exports = {
 
     db.query('SELECT * FROM jobs WHERE id=$1 AND status=0', [jobID])
       .then((result) => {
-        res.json({success: true, error: null, data: result.rows[0]});
+        res.json({ success: true, error: null, data: result.rows[0] });
       })
       .catch((err) => {
-        res.json({success: false, error: 'Failed to load job data', data: null});
+        res.json({ success: false, error: 'Failed to load job data', data: null });
       });
   }
 }
