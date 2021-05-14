@@ -3,8 +3,6 @@
  * Bootstrap style overrides
  */
 
-// Palette
-
 $logo0: #488fe0;
 $logo1: #2a76c7;
 $text0: #828f9e;
@@ -28,9 +26,7 @@ $green-100: #4ade80;
 $yellow-60: #ffa21499;
 $yellow-100: #ffa214;
 
-
-@import '../../node_modules/bootstrap/scss/bootstrap';
-
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
 body {
   color: $text1;
@@ -82,7 +78,6 @@ body {
     }
   }
 
-
   .swal-modal {
     padding: 30px 0;
     border-radius: 10px;
@@ -108,7 +103,6 @@ body {
     }
   }
 
-
   @include media-breakpoint-up(xl) {
     .container {
       max-width: 1200px;
@@ -116,7 +110,6 @@ body {
   }
 }
 
-
 ::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }

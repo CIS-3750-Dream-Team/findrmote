@@ -3,9 +3,8 @@
  * Dropdown component styling
  */
 
-@import 'main';
-@import 'custom';
-
+@import "main";
+@import "custom";
 
 .dropdown {
   .dropdown-toggle {
@@ -49,8 +48,8 @@
     .dropdown-menu {
       top: -10px;
       left: 100%;
-      margin-left: .1rem;
-      margin-right: .1rem;
+      margin-left: 0.1rem;
+      margin-right: 0.1rem;
       border-radius: 0.25rem 0.5rem 0.5rem;
     }
   }

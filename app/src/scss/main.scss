@@ -3,12 +3,12 @@
  * Global style definitions
  */
 
-@import 'custom';
+@import "custom";
 
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500&family=Source+Sans+Pro:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@500&family=Source+Sans+Pro:wght@400;700&display=swap");
 
 body {
-  font-family: 'Source Sans Pro', sans-serif !important;
+  font-family: "Source Sans Pro", sans-serif !important;
   background-color: $grey0 !important;
 
   #logo {
@@ -70,7 +70,7 @@ body {
   }
 }
 
-@include media-breakpoint-down(sm) { 
+@include media-breakpoint-down(sm) {
   body {
     #logo {
       max-width: 150px;

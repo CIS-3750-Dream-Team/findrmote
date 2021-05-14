@@ -1,43 +1,45 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
 import Dropdown from './Dropdown';
 
 
 /** FilterSelect Component
- * @prop {Array}      jobs         List of all jobs. Used to build dropdown submenu
- * @prop {Function}   setFilter    Sets the filter function to be used on the home page
+ * A dropdown for selecting job filter (one filter at a time)
+ * @prop {Array}      jobs        List of all jobs. Used to build dropdown submenu
+ * @prop {Function}   setFilter   Sets the filter function to be used on the home page
+ * @returns {Component}
  */
-function FilterSelect({jobs, setFilter}) {
+export default function FilterSelect({ jobs, setFilter }) {
   const [options, setOptions] = useState([
     {
       label: 'Companies',
       options: [
-        {label: 'Google'},
-        {label: 'Netflix'}
+        { label: 'Google' },
+        { label: 'Netflix' }
       ]
     },
     {
-      label: 'Job Title', 
+      label: 'Job Title',
       options: [
-        {label: 'Software Engineer'},
-        {label: 'Backend Developer'}
+        { label: 'Software Engineer' },
+        { label: 'Backend Developer' }
       ]
     },
     {
       label: 'Creation Date',
       options: [
-        {label: '2020-12-03'},
-        {label: '2021-11-02'}
+        { label: '2020-12-03' },
+        { label: '2021-11-02' }
       ]
     }
   ]);
 
   function setDropdown(selected) {
     setOptions(
-      options.map(({label, active, options}) => ({
+      options.map(({ label, active, options }) => ({
         label,
         active: (!active && label === selected) || (active && label !== selected),
-        options: options?.map(({label, active}) => ({
+        options: options?.map(({ label, active }) => ({
           label, active: (!active && label === selected) || (active && label !== selected)
         }))
       }))
@@ -46,11 +48,11 @@ function FilterSelect({jobs, setFilter}) {
 
   function clearDropdown(_) {
     setOptions(
-      options.map(({label, options}) => ({
+      options.map(({ label, options }) => ({
         label,
         active: false,
-        options: options?.map(({label}) => ({
-            label, active: false
+        options: options?.map(({ label }) => ({
+          label, active: false
         }))
       }))
     );
@@ -68,5 +70,3 @@ function FilterSelect({jobs, setFilter}) {
     />
   );
 }
-
-export default FilterSelect;

@@ -13,120 +13,11 @@ import '../../scss/error.scss';
 
 
 /**
- * @see - https://formik.org/docs/api/useFormikContext
- * @param {Object} props
- * @returns - A helper React component that uses React Context to grab all the form values of Formik and trigger form submission manually
+ * Displays the profile form as a tab on the Profile page
+ * @param   {Object} props
+ * @returns {Component}
  */
-function SubmitFormOnSave({ isSaved, setSaved, setEditable, session }) {
-  const {submitForm, isSubmitting, validateForm, setErrors, setTouched} = useFormikContext();
-
-  useEffect(() => {
-    (async () => {
-      // if form is not valid return
-      if (isSaved && !isSubmitting) {
-        try {
-          const errors = await validateForm();
-
-          if (errors && Object.keys(errors).length === 0) {
-            // Form is valid, do any success call
-            await submitForm();
-            setEditable(false);
-            setSaved(false);
-
-            return;
-          }
-
-          setTouched({ ...touchAllFields(session) });
-          setErrors({ ...errors });
-          setSaved(false);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    })();
-  }, [isSaved]);
-
-  return null;
-}
-
-/**
- * @param {string} session - The user session - candidate or employer
- * @returns - an object with all the form fields set to true
- */
-function touchAllFields(session) {
-  let touched = {firstName: true, lastName: true, email: true};
-
-  if (session === 'candidate') {
-    touched = {
-      ...touched,
-      github: true,
-      linkedIn: true,
-      personalSite: true,
-      getNotifications: true,
-      employerVisible: true,
-      startDate: true,
-      endDate: true
-    };
-
-    return touched;
-  }
-
-  return touched;
-}
-
-/**
- * Function that sets up the initial values for form population and the validation schema
- * @param {string} session - Candidate or Employer
- * @param {Object} userData - Pofile information about the user
- * @returns a tuple of the initial form values and the validation schema based on the session
- */
-function getInitialValuesAndSchema(session, userData) {
-  let initialValues = {};
-  let validationSchema = zeroValidationSchema;
-
-  if (userData) {
-    if (session === 'candidate') {
-      // Set initial values for candidate
-      initialValues = {
-        firstName: userData?.f_name ?? '',
-        lastName: userData?.l_name ?? '',
-        email: userData?.email ?? '',
-        education: userData?.meta?.education ?? '',
-        degree: userData?.meta?.education_lvl ?? '',
-        github: userData?.meta?.lnk_github ?? '',
-        linkedIn: userData?.meta?.lnk_linkedin ?? '',
-        personalSite: userData?.meta?.lnk_website ?? '',
-        startDate: userData?.meta?.s_date ?? '',
-        endDate: userData?.meta?.e_date ?? '',
-        getNotifications: userData?.notifications ?? false,
-        employerVisible: userData?.employer_visible ?? false,
-      };
-
-      // Set validation for candidate
-      validationSchema = profileValidationCandidateSchema;
-
-    } else if (session === 'employer') {
-      // Set initial values for employer
-      initialValues = {
-        firstName: userData?.f_name ?? '',
-        lastName: userData?.l_name ?? '',
-        email: userData?.email ?? ''
-      };
-
-      // Set validation for employer
-      validationSchema = profileValidationEmployerSchema;
-    }
-  }
-
-  return [initialValues, validationSchema];
-}
-
-
-/**
- * @param {Object} props
- * @returns - The React Component that displays the Profile Form
- */
-export default function ProfileTab({data, session, isEditable, isSaved, setSaved, setEditable}) {
+export default function ProfileTab({ data, session, isEditable, isSaved, setSaved, setEditable }) {
   const [initialValues, validationSchema] = getInitialValuesAndSchema(session.type, data);
   const history = useHistory();
 
@@ -134,23 +25,22 @@ export default function ProfileTab({data, session, isEditable, isSaved, setSaved
     console.log(values)
     fetch(`${process.env.REACT_APP_API_URL}/profile`, {
       method: 'POST',
-      body: JSON.stringify({values, userID: session.id, type: session.type, form: 'profile'}),
-      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ values, userID: session.id, type: session.type, form: 'profile' }),
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          swal({icon: 'success', title: 'Profile Updated!'});
+          swal({ icon: 'success', title: 'Profile Updated!' });
 
           history.push('/');
           history.push('/profile');
-
         } else {
-          swal({icon: 'error', title: 'Uh oh!', text: res.error});
+          swal({ icon: 'error', title: 'Uh oh!', text: res.error });
         }
       })
       .catch((err) => {
-        swal({icon: 'error', title: 'Uh oh!', text: 'Failed to update your profile!'});
+        swal({ icon: 'error', title: 'Uh oh!', text: 'Failed to update your profile!' });
         console.error(err);
       });
   }
@@ -164,7 +54,7 @@ export default function ProfileTab({data, session, isEditable, isSaved, setSaved
         validateOnBlur
       >
         {(formikProps) => {
-          const props = {...formikProps, isEditable};
+          const props = { ...formikProps, isEditable };
 
           return (
             <div>
@@ -393,7 +283,7 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
           htmlFor='personalSite'
         >
           <span className={errors?.personalSite && touched?.personalSite ? 'fw-bolder me-1' : null}>
-            Personal Website 
+            Personal Website
           </span>
           <ErrorMessage name='personalSite' />
         </label>
@@ -451,4 +341,109 @@ function ProfileCandidateOptional({ errors, touched, isEditable }) {
       </div>
     </Form>
   );
+}
+
+
+function SubmitFormOnSave({ isSaved, setSaved, setEditable, session }) {
+  const { submitForm, isSubmitting, validateForm, setErrors, setTouched } = useFormikContext();
+
+  useEffect(() => {
+    (async () => {
+      // if form is not valid return
+      if (isSaved && !isSubmitting) {
+        try {
+          const errors = await validateForm();
+
+          if (errors && Object.keys(errors).length === 0) {
+            // Form is valid, do any success call
+            await submitForm();
+            setEditable(false);
+            setSaved(false);
+
+            return;
+          }
+
+          setTouched({ ...touchAllFields(session) });
+          setErrors({ ...errors });
+          setSaved(false);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    })();
+  }, [isSaved]);
+
+  return null;
+}
+
+/**
+ * @param {string} session  The user session (candidate or employer)
+ * @returns An object with all the form fields set to true
+ */
+function touchAllFields(session) {
+  let touched = { firstName: true, lastName: true, email: true };
+
+  if (session === 'candidate') {
+    touched = {
+      ...touched,
+      github: true,
+      linkedIn: true,
+      personalSite: true,
+      getNotifications: true,
+      employerVisible: true,
+      startDate: true,
+      endDate: true
+    };
+
+    return touched;
+  }
+
+  return touched;
+}
+
+/**
+ * Function that sets up the initial values for form population and the validation schema
+ * @param {string}  session    Candidate or Employer
+ * @param {Object}  userData   Pofile information about the user
+ * @returns A tuple of the initial form values and the validation schema based on the session
+ */
+function getInitialValuesAndSchema(session, userData) {
+  let initialValues = {};
+  let validationSchema = zeroValidationSchema;
+
+  if (userData) {
+    if (session === 'candidate') {
+      // Set initial values for candidate
+      initialValues = {
+        firstName: userData?.f_name ?? '',
+        lastName: userData?.l_name ?? '',
+        email: userData?.email ?? '',
+        education: userData?.meta?.education ?? '',
+        degree: userData?.meta?.education_lvl ?? '',
+        github: userData?.meta?.lnk_github ?? '',
+        linkedIn: userData?.meta?.lnk_linkedin ?? '',
+        personalSite: userData?.meta?.lnk_website ?? '',
+        startDate: userData?.meta?.s_date ?? '',
+        endDate: userData?.meta?.e_date ?? '',
+        getNotifications: userData?.notifications ?? false,
+        employerVisible: userData?.employer_visible ?? false,
+      };
+
+      // Set validation for candidate
+      validationSchema = profileValidationCandidateSchema;
+
+    } else if (session === 'employer') {
+      // Set initial values for employer
+      initialValues = {
+        firstName: userData?.f_name ?? '',
+        lastName: userData?.l_name ?? '',
+        email: userData?.email ?? ''
+      };
+
+      // Set validation for employer
+      validationSchema = profileValidationEmployerSchema;
+    }
+  }
+
+  return [initialValues, validationSchema];
 }

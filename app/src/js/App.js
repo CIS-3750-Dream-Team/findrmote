@@ -21,7 +21,7 @@ function App(props) {
   const [userID, setUserID] = useState(null);
   const [userType, setUserType] = useState(null);
   const [collections, setCollections] = useState([]);
-  const [page, setPage] = useState({home: true});
+  const [page, setPage] = useState({ home: true });
 
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function App(props) {
 
     if (userID) {
       fetch(`${process.env.REACT_APP_API_URL}/collections/:${userID}`, {
-        headers: {'Content-Type': 'application/json'},
+        headers: { 'Content-Type': 'application/json' },
         method: 'GET'
       })
         .then((res) => res.json())
@@ -49,11 +49,11 @@ function App(props) {
           if (res.success) {
             setCollections([res.data, null]);
           } else {
-            swal({icon: 'error', title: 'Uh oh!', text: res.error});
+            swal({ icon: 'error', title: 'Uh oh!', text: res.error });
           }
         })
         .catch((err) => {
-          swal({icon: 'error', title: 'Uh oh!', text: 'Failed to load your collections!'});
+          swal({ icon: 'error', title: 'Uh oh!', text: 'Failed to load your collections!' });
           console.error(err);
         });
     } else {
@@ -83,8 +83,8 @@ function App(props) {
       get: (id) => collections[0]?.[id],
       sync: collections[1]
     },
-    setCollection: (jobID, state, sync=null) => {
-      setCollections(prev => [({...prev[0], [jobID]: state}), sync]);
+    setCollection: (jobID, state, sync = null) => {
+      setCollections(prev => [({ ...prev[0], [jobID]: state }), sync]);
     }
   };
 
@@ -92,41 +92,41 @@ function App(props) {
   return (
     /* Session will also need to store jobs and collections */
     <Session.Provider value={session}>
-      <div className="App container d-flex flex-column vh-100">
-        <header className="row justify-content-center px-3">
-          <div className="col-sm col-10 mt-5">
-            <div className="row align-items-center justify-content-between mt-sm-5 mt-3">
-              <Link className="col" to="/">
-                <img id="logo" src="logo.svg" alt=""/>
+      <div className='App container d-flex flex-column vh-100'>
+        <header className='row justify-content-center px-3'>
+          <div className='col-sm col-10 mt-5'>
+            <div className='row align-items-center justify-content-between mt-sm-5 mt-3'>
+              <Link className='col' to='/'>
+                <img id='logo' src='logo.svg' alt='' />
               </Link>
 
               {!userID ?
-                <div className="col d-md-flex d-none justify-content-end me-5">
-                  <Link className="btn btn-light" to="/login"> Sign in </Link>
-                  <Link className="btn btn-secondary ms-3" to="/register"> Register </Link>
+                <div className='col d-md-flex d-none justify-content-end me-5'>
+                  <Link className='btn btn-light' to='/login'> Sign in </Link>
+                  <Link className='btn btn-secondary ms-3' to='/register'> Register </Link>
                 </div>
-              :
-                <div className="col d-md-flex d-none justify-content-end me-5">
-                  {/* Prompt the user on logout w/ "are you sure?" or smthn */}
-                  <button 
-                    className="btn btn-light fw-bolder" 
+                :
+                <div className='col d-md-flex d-none justify-content-end me-5'>
+                  {/* Prompt the user on logout w/ 'are you sure?' or smthn */}
+                  <button
+                    className='btn btn-light fw-bolder'
                     onClick={() => setUserID(null) || setUserType(null)}
                   > Logout </button>
                 </div>
               }
 
-              <div className="col-5 col-xl-2 col-md-3">
-                <div className="d-flex flex-row justify-content-between">
-                  <IconContext.Provider value={{color: '#5a6570'}} >
-                    <Link className="p-0" to="/"> <HiOutlineSun size={30} /> </Link>
-                    <Link className="p-0" to="/"> <HiOutlineBell size={30} /> </Link>
+              <div className='col-5 col-xl-2 col-md-3'>
+                <div className='d-flex flex-row justify-content-between'>
+                  <IconContext.Provider value={{ color: '#5a6570' }} >
+                    <Link className='p-0' to='/'> <HiOutlineSun size={30} /> </Link>
+                    <Link className='p-0' to='/'> <HiOutlineBell size={30} /> </Link>
 
                     {page.home ?
-                      <Link className="p-0" to={userID ? '/profile' : '/login'}> 
-                        <HiOutlineUserCircle size={30} /> 
+                      <Link className='p-0' to={userID ? '/profile' : '/login'}>
+                        <HiOutlineUserCircle size={30} />
                       </Link>
-                    :
-                      <Link className="p-0" to="/"> <HiOutlineHome size={30} /> </Link>
+                      :
+                      <Link className='p-0' to='/'> <HiOutlineHome size={30} /> </Link>
                     }
                   </IconContext.Provider>
                 </div>
@@ -136,18 +136,18 @@ function App(props) {
         </header>
 
         {/* Replace 'undefined' as pages are created */}
-        <Route exact path="/" render={(_) => <Home />} />
-        <Route exact path="/job:job_id" render={(_) => <Job />} />
-        <Route exact path="/login" render={(_) => <Login />} />
-        <Route exact path="/register" render={(_) => <Register />} />
-        <Route exact path="/profile" render={(_) => <Profile />} />
-        <Route exact path="/admin" render={(_) => undefined} />
+        <Route exact path='/' render={(_) => <Home />} />
+        <Route exact path='/job:job_id' render={(_) => <Job />} />
+        <Route exact path='/login' render={(_) => <Login />} />
+        <Route exact path='/register' render={(_) => <Register />} />
+        <Route exact path='/profile' render={(_) => <Profile />} />
+        <Route exact path='/admin' render={(_) => undefined} />
 
         {/* For development. Displays some common components/elements/patterns */}
-        <Route exact path="/components" render={(_) => <Components />} />
+        <Route exact path='/components' render={(_) => <Components />} />
         {/* An invisible button in the top left corner to set the user session */}
         <button
-          className="btn btn-light position-fixed bottom-0 end-0"
+          className='btn btn-light position-fixed bottom-0 end-0'
           onClick={() => setUserID('6c64cc58-a53f-4edf-a4ca-e6ce8a04f1c9') || setUserType('candidate')}
         > x </button>
 

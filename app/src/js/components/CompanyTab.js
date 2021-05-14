@@ -10,10 +10,11 @@ import '../../scss/error.scss';
 
 
 /**
- * @param {Object} props
- * @returns - The React Component that displays the Company Tab
+ * Displays the company form as a tab on the Profile page
+ * @param   {Object} props
+ * @returns {Component}
  */
-export default function CompanyTab({data, session, isEditable, isSaved, setSaved, setEditable}) {
+export default function CompanyTab({ data, session, isEditable, isSaved, setSaved, setEditable }) {
   const history = useHistory();
 
   const initialValues = {
@@ -28,23 +29,23 @@ export default function CompanyTab({data, session, isEditable, isSaved, setSaved
   function updateProfile(values) {
     fetch(`${process.env.REACT_APP_API_URL}/profile`, {
       method: 'POST',
-      body: JSON.stringify({values, userID: session.id, type: session.type, form: 'company'}),
-      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ values, userID: session.id, type: session.type, form: 'company' }),
+      headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())
       .then((res) => {
         if (res.success) {
-          swal({icon: 'success', title: 'Profile Updated!'});
+          swal({ icon: 'success', title: 'Profile Updated!' });
 
           history.push('/');
           history.push('/profile');
 
         } else {
-          swal({icon: 'error', title: 'Uh oh!', text: res.error});
+          swal({ icon: 'error', title: 'Uh oh!', text: res.error });
         }
       })
       .catch((err) => {
-        swal({icon: 'error', title: 'Uh oh!', text: 'Failed to update your profile!'});
+        swal({ icon: 'error', title: 'Uh oh!', text: 'Failed to update your profile!' });
         console.error(err);
       });
   }
@@ -204,7 +205,7 @@ export default function CompanyTab({data, session, isEditable, isSaved, setSaved
  * @param {Object} props
  * @returns - A helper React component that uses React Context to grab all the form values of Formik and trigger form submission manually
  */
- function SubmitFormOnSave({ isSaved, setSaved, setEditable }) {
+function SubmitFormOnSave({ isSaved, setSaved, setEditable }) {
   const {
     submitForm,
     isSubmitting,

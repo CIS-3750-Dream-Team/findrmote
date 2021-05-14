@@ -3,8 +3,8 @@
  * Job Card Component Styling
  */
 
-@import 'main';
-@import 'custom';
+@import "main";
+@import "custom";
 
 .jobcard {
   border: none !important;
@@ -45,7 +45,7 @@
       margin-right: 10px;
       margin-top: 5px;
       margin-bottom: 5px;
-      font-family: 'Rubik', sans-serif;
+      font-family: "Rubik", sans-serif;
       font-size: 0.65em;
       line-height: 105%;
       color: $text0;
@@ -59,8 +59,9 @@
 
   &:hover {
     cursor: pointer;
-    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04),
-      0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
+      0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
+      0px 0px 1px rgba(0, 0, 0, 0.04) !important;
 
     .job-controls {
       opacity: 1;
